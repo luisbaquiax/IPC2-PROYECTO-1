@@ -12,5 +12,6 @@
         <title>TIENDA</title>
     </head>
     <body>
+        hola
     </body>
 </html>
