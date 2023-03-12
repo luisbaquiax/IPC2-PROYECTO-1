@@ -9,7 +9,7 @@ package com.baquiax.tienda.entidad.enumEntidad;
  *
  * @author luis
  */
-public enum EstadoEnvio {
+public enum EstadoEnvioEnum {
     DESPACHADO,
     RECIBIDO
 }

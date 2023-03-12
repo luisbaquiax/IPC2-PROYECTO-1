@@ -9,7 +9,7 @@ package com.baquiax.tienda.entidad.enumEntidad;
  *
  * @author luis
  */
-public enum EstadoPedido {
+public enum EstadoPedidoEnum {
     RECHAZADO,
     PENDIENTE,
     SOLICITADO,

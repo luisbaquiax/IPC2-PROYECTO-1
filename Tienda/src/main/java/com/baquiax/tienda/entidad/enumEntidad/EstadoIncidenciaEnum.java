@@ -9,8 +9,7 @@ package com.baquiax.tienda.entidad.enumEntidad;
  *
  * @author luis
  */
-public enum EstadoDevolucion {
+public enum EstadoIncidenciaEnum {
     ACTIVA,
-    RECHAZADA,
-    ACEPTADA
+    SOLUCIONADA
 }

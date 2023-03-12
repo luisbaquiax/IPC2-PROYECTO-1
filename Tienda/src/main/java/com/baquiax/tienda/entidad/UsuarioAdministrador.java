@@ -11,10 +11,13 @@ import java.io.Serializable;
  *
  * @author luis
  */
-public class UsuarioAdministrador extends Usuario implements Serializable  {
-    
-    public UsuarioAdministrador(String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
+public class UsuarioAdministrador extends Usuario implements Serializable {
+
+    public UsuarioAdministrador() {
     }
-    
+
+    public UsuarioAdministrador(String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String emial) {
+        super(codigo, tipo, nombreUsuario, nombre, password, estado, emial);
+    }
+
 }

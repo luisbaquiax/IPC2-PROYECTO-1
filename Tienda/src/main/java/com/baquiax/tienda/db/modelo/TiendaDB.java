@@ -8,6 +8,7 @@ package com.baquiax.tienda.db.modelo;
 import com.baquiax.tienda.db.coneccion.ConeccionDB;
 import com.baquiax.tienda.entidad.Tienda;
 import com.baquiax.tienda.entidad.UsuarioBodega;
+import com.baquiax.tienda.entidad.UsuarioTienda;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,11 @@ public class TiendaDB {
     private final static String INSERT = "INSERT INTO tienda(codigo,direccion,tipo) VALUES(?,?,?)";
     private final static String UPDATE = "UPDATE tienda SET direccion = ?, tipo = ? WHERE codigo = ?";
     private final static String SELECT = "SELECT * FROM tienda";
+
+    /**
+     *
+     */
+    private final static String SELECT_BY_TIPO = "SELECT * FROM tienda WHERE tipo = ?";
     /**
      * Tiendas por usuario bodega
      */
@@ -29,6 +35,15 @@ public class TiendaDB {
             + "FROM tienda t\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  t.codigo = b.codigo_tienda WHERE b.codigo_usuario_bodega = ?";
+    /**
+     * Tienda a cargo de un usuario tienda
+     */
+    private final static String SELECT_TIENDA_BY_USUARIO_TIENDA
+            = "SELECT p.codigo, p.direccion, p.tipo\n"
+            + "FROM tienda p\n"
+            + "RIGHT JOIN usuario_tienda u\n"
+            + "ON  p.codigo = u.codigo_tienda \n"
+            + "WHERE u.codigo = ?";
 
     private ResultSet resultSet;
 
@@ -101,7 +116,7 @@ public class TiendaDB {
      * @param usuarioBodega
      * @return
      */
-    public ArrayList<Tienda> getTiendaByUsuarioBodega(UsuarioBodega usuarioBodega) {
+    public ArrayList<Tienda> getTiendasByUsuarioBodega(UsuarioBodega usuarioBodega) {
         List<Tienda> tiendas = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_BODEGA)) {
             statement.setString(1, usuarioBodega.getCodigo());
@@ -116,6 +131,51 @@ public class TiendaDB {
             System.out.println(e.getMessage());
         }
         return (ArrayList<Tienda>) tiendas;
+    }
+
+    /**
+     * Retorna la tienda a cargo de un usuario de tienda
+     *
+     * @param usuarioTienda
+     * @return
+     */
+    public Tienda getTiendaByUsuarioTienda(UsuarioTienda usuarioTienda) {
+        Tienda tienda = null;
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_TIENDA_BY_USUARIO_TIENDA)) {
+            statement.setString(1, usuarioTienda.getCodigo());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                tienda = getTienda(resultSet);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return tienda;
+    }
+
+    /**
+     * Lista de tiendas por tipos
+     *
+     * @param tipo
+     * @return
+     */
+    public List<Tienda> getTienda(String tipo) {
+        List<Tienda> tiendas = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIPO)) {
+            statement.setString(1, tipo);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                tiendas.add(getTienda(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return tiendas;
     }
 
     private Tienda getTienda(ResultSet resultSet) throws SQLException {

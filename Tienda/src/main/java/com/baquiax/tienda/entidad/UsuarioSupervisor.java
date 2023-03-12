@@ -13,29 +13,10 @@ import java.io.Serializable;
  */
 public class UsuarioSupervisor extends Usuario implements Serializable {
 
-    private String email;
-
-    public UsuarioSupervisor(String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
+    public UsuarioSupervisor() {
     }
 
-    public UsuarioSupervisor(String email, String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
-        this.email = email;
+    public UsuarioSupervisor(String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String email) {
+        super(codigo, tipo, nombreUsuario, nombre, password, estado, email);
     }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 }

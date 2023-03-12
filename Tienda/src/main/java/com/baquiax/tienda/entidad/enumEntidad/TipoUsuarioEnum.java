@@ -9,7 +9,7 @@ package com.baquiax.tienda.entidad.enumEntidad;
  *
  * @author luis
  */
-public enum TipoUsuario {
+public enum TipoUsuarioEnum {
     USUARIO_TIENDA,
     USUARIO_ADMIN,
     USUARIO_BODEGA,

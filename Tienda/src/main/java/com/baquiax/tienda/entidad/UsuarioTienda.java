@@ -14,16 +14,17 @@ import java.io.Serializable;
 public class UsuarioTienda extends Usuario implements Serializable {
 
     private String codigoTienda;
-    private String email;
 
-    public UsuarioTienda(String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
+    public UsuarioTienda() {
     }
 
-    public UsuarioTienda(String codigoTienda, String email, String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
+    public UsuarioTienda(String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String emial) {
+        super(codigo, tipo, nombreUsuario, nombre, password, estado, emial);
+    }
+
+    public UsuarioTienda(String codigoTienda, String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String emial) {
+        super(codigo, tipo, nombreUsuario, nombre, password, estado, emial);
         this.codigoTienda = codigoTienda;
-        this.email = email;
     }
 
     /**
@@ -38,20 +39,6 @@ public class UsuarioTienda extends Usuario implements Serializable {
      */
     public void setCodigoTienda(String codigoTienda) {
         this.codigoTienda = codigoTienda;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
 }

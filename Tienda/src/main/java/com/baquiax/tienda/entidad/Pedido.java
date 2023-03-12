@@ -20,8 +20,12 @@ public class Pedido implements Serializable {
     private String estado;
     private String usuarioTienda;
     private String codigoTienda;
+    private String codigoSupervisor;
 
     private ArrayList<DetallePedido> detalle;
+
+    public Pedido() {
+    }
 
     /**
      *
@@ -31,14 +35,42 @@ public class Pedido implements Serializable {
      * @param estado
      * @param usuarioTienda
      * @param codigoTienda
+     * @param codigoSupervisor
      */
-    public Pedido(int id, String fecha, double total, String estado, String usuarioTienda, String codigoTienda) {
+    public Pedido(int id, String fecha, double total, String estado, String usuarioTienda, String codigoTienda, String codigoSupervisor) {
         this.id = id;
         this.fecha = fecha;
         this.total = total;
         this.estado = estado;
         this.usuarioTienda = usuarioTienda;
         this.codigoTienda = codigoTienda;
+        this.codigoSupervisor = codigoSupervisor;
+    }
+
+    /**
+     * Insert new pedido
+     *
+     * @param fecha
+     * @param total
+     * @param estado
+     * @param usuarioTienda
+     * @param codigoTienda
+     * @param codigoSupervisor
+     * @param detalle
+     */
+    public Pedido(String fecha, double total, String estado, String usuarioTienda, String codigoTienda, String codigoSupervisor, ArrayList<DetallePedido> detalle) {
+        this.fecha = fecha;
+        this.total = total;
+        this.estado = estado;
+        this.usuarioTienda = usuarioTienda;
+        this.codigoTienda = codigoTienda;
+        this.codigoSupervisor = codigoSupervisor;
+        this.detalle = detalle;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" + "id=" + id + ", fecha=" + fecha + ", total=" + total + ", estado=" + estado + ", usuarioTienda=" + usuarioTienda + ", codigoTienda=" + codigoTienda + ", codigoSupervisor=" + codigoSupervisor + ", detalle=" + detalle + '}';
     }
 
     /**
@@ -137,6 +169,20 @@ public class Pedido implements Serializable {
      */
     public void setDetalle(ArrayList<DetallePedido> detalle) {
         this.detalle = detalle;
+    }
+
+    /**
+     * @return the codigoSupervisor
+     */
+    public String getCodigoSupervisor() {
+        return codigoSupervisor;
+    }
+
+    /**
+     * @param codigoSupervisor the codigoSupervisor to set
+     */
+    public void setCodigoSupervisor(String codigoSupervisor) {
+        this.codigoSupervisor = codigoSupervisor;
     }
 
 }

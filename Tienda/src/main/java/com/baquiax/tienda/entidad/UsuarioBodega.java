@@ -14,31 +14,13 @@ import java.util.ArrayList;
  */
 public class UsuarioBodega extends Usuario implements Serializable {
 
-    private String email;
     private ArrayList<Tienda> tiendas;
 
-    public UsuarioBodega(String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
+    public UsuarioBodega() {
     }
 
-    public UsuarioBodega(String email, ArrayList<Tienda> tiendas, String codigo, String tipo, String nombreUsuario, String nombre, String password) {
-        super(codigo, tipo, nombreUsuario, nombre, password);
-        this.email = email;
-        this.tiendas = tiendas;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
+    public UsuarioBodega(String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String email) {
+        super(codigo, tipo, nombreUsuario, nombre, password, estado, email);
     }
 
     /**

@@ -12,6 +12,12 @@ CREATE TABLE IF NOT EXISTS producto(
     existencia int NOT NULL,
     PRIMARY KEY(codigo)
 );
+CREATE TABLE IF NOT EXISTS producto_dañado(
+    codigo VARCHAR(20) NOT NULL,
+    existencia int NOT NULL,
+    PRIMARY KEY(codigo),
+    FOREIGN KEY(codigo) REFERENCES producto(codigo) ON UPDATE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS tienda(
     codigo VARCHAR(20) NOT NULL,
@@ -34,7 +40,9 @@ CREATE TABLE IF NOT EXISTS usuario(
     tipo VARCHAR(20) NOT NULL,
     nombre_usuario VARCHAR(45) NOT NULL,
     nombre VARCHAR(45) NOT NULL,
-    password VARCHAR(45) NOT NULL,
+    estado BOOLEAN NOT NULL,
+    email VARCHAR(45),
+    password VARCHAR(100) NOT NULL,
     PRIMARY KEY (codigo)
 );
 
@@ -47,22 +55,19 @@ CREATE TABLE IF NOT EXISTS administrador(
 CREATE TABLE IF NOT EXISTS usuario_tienda(
     codigo VARCHAR(20) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
-    email VARCHAR(45) NOT NULL,
     PRIMARY KEY(codigo),
-    FOREIGN KEY(codigo) REFERENCES usuario(codigo),
+    FOREIGN KEY(codigo) REFERENCES usuario(codigo) ON UPDATE CASCADE,
     FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE  
 );
 
 CREATE TABLE IF NOT EXISTS usuario_supervisor(
     codigo VARCHAR(20) NOT NULL,
-    email VARCHAR(45) NOT NULL,
     PRIMARY KEY(codigo),
     FOREIGN KEY(codigo) REFERENCES usuario(codigo) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS usuario_bodega(
     codigo VARCHAR(20) NOT NULL,
-    email VARCHAR(45) NOT NULL,
     PRIMARY KEY(codigo),
     FOREIGN KEY(codigo) REFERENCES usuario(codigo) ON UPDATE CASCADE
 );
@@ -70,7 +75,7 @@ CREATE TABLE IF NOT EXISTS usuario_bodega(
 CREATE TABLE IF NOT EXISTS bodega_tienda(
     codigo_usuario_bodega VARCHAR(20) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
-    PRIMARY KEY(codigo_usuario_bodega, codigo_tienda),
+    PRIMARY KEY(usuario_bodega, codigo_tienda),
     FOREIGN KEY(codigo_usuario_bodega) REFERENCES usuario_bodega(codigo) ON UPDATE CASCADE,
     FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE
 );
@@ -82,9 +87,11 @@ CREATE TABLE IF NOT EXISTS pedido(
     estado VARCHAR(45) NOT NULL,
     usuario_tienda VARCHAR(20) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
+    codigo_supervisor VARCHAR(20),
     PRIMARY KEY(id),
     FOREIGN KEY(usuario_tienda) REFERENCES usuario_tienda(codigo) ON UPDATE CASCADE,
-    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE
+    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE,
+    FOREIGN KEY(codigo_supervisor) REFERENCES usuario_supervisor(codigo) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS detalle_pedido(
@@ -144,7 +151,7 @@ CREATE TABLE IF NOT EXISTS detalle_devolucion(
 CREATE TABLE IF NOT EXISTS envio(
     id INT AUTO_INCREMENT NOT NULL,
     fecha_salida DATE NOT NULL,
-    fecha_llegada DATE NOT NULL,
+    fecha_llegada DATE,
     total DOUBLE NOT NULL,
     estado VARCHAR(45) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
@@ -162,13 +169,4 @@ CREATE TABLE IF NOT EXISTS detalle_envio(
     PRIMARY KEY(id_envio, codigo_producto),
     FOREIGN KEY(id_envio) REFERENCES envio(id) ON UPDATE CASCADE,
     FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS supervision(
-    id INT AUTO_INCREMENT NOT NULL,
-    codigo_supervisor VARCHAR(20) NOT NULL,
-    codigo_tienda VARCHAR(20) NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(codigo_supervisor) REFERENCES usuario_supervisor(codigo) ON UPDATE CASCADE,
-    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE
 );

@@ -18,6 +18,11 @@ public class Usuario implements Serializable {
     private String nombreUsuario;
     private String nombre;
     private String password;
+    private boolean estado;
+    private String email;
+
+    public Usuario() {
+    }
 
     /**
      *
@@ -26,13 +31,22 @@ public class Usuario implements Serializable {
      * @param nombreUsuario
      * @param nombre
      * @param password
+     * @param estado
+     * @param emial
      */
-    public Usuario(String codigo, String tipo, String nombreUsuario, String nombre, String password) {
+    public Usuario(String codigo, String tipo, String nombreUsuario, String nombre, String password, boolean estado, String emial) {
         this.codigo = codigo;
         this.tipo = tipo;
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.password = password;
+        this.estado = estado;
+        this.email = emial;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "codigo=" + codigo + ", tipo=" + tipo + ", nombreUsuario=" + nombreUsuario + ", nombre=" + nombre + ", password=" + password + ", estado=" + estado + ", email=" + email + '}';
     }
 
     /**
@@ -103,6 +117,34 @@ public class Usuario implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the estado
+     */
+    public boolean isEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

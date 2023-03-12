@@ -19,6 +19,9 @@ public class DetalleEnvio implements Serializable {
     private double precioUnitario;
     private double subtotal;
 
+    public DetalleEnvio() {
+    }
+
     public DetalleEnvio(int idEnvio, String codigoProducto, int cantidad, double precioUnitario, double subtotal) {
         this.idEnvio = idEnvio;
         this.codigoProducto = codigoProducto;

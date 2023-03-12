@@ -35,6 +35,11 @@ public class DetallePedido implements Serializable {
         this.subtotal = subtotal;
     }
 
+    @Override
+    public String toString() {
+        return "DetallePedido{" + "idPedido=" + idPedido + ", codigoProducto=" + codigoProducto + ", cantidad=" + cantidad + ", precioUnitario=" + precioUnitario + ", subtotal=" + subtotal + '}';
+    }
+
     /**
      * @return the idPedido
      */

@@ -34,7 +34,7 @@ public class ConeccionDB {
     }
 
     public static Connection getConnection() throws SQLException {
-        if (conexionSingleton == null) {
+        if (CONECCION == null) {
             conexionSingleton = new ConeccionDB();
         }
         return CONECCION;

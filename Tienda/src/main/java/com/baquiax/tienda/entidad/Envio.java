@@ -23,7 +23,11 @@ public class Envio implements Serializable {
     private String usuarioBodega;
     private ArrayList<DetalleEnvio> detalle;
 
+    public Envio() {
+    }
+
     /**
+     * Insert a new envio from file
      *
      * @param id
      * @param fechaSalida
@@ -41,6 +45,27 @@ public class Envio implements Serializable {
         this.estado = estado;
         this.codigoTienda = codigoTienda;
         this.usuarioBodega = usuarioBodega;
+    }
+
+    /**
+     * Insert a new envio
+     *
+     * @param fechaSalida
+     * @param fechaLlegada
+     * @param total
+     * @param estado
+     * @param codigoTienda
+     * @param usuarioBodega
+     * @param detalle
+     */
+    public Envio(String fechaSalida, String fechaLlegada, double total, String estado, String codigoTienda, String usuarioBodega, ArrayList<DetalleEnvio> detalle) {
+        this.fechaSalida = fechaSalida;
+        this.fechaLlegada = fechaLlegada;
+        this.total = total;
+        this.estado = estado;
+        this.codigoTienda = codigoTienda;
+        this.usuarioBodega = usuarioBodega;
+        this.detalle = detalle;
     }
 
     /**

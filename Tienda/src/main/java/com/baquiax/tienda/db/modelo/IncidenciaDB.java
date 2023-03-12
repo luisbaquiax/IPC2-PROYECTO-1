@@ -39,6 +39,9 @@ public class IncidenciaDB {
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
             + "WHERE b.codigo_usuario_bodega = ? AND p.codigo_tienda = ?";
+    private final static String INCIDENCIAS_BY_TIENDA_BY_ESTADO_FECHA
+            = "SELECT * FROM incidencia WHERE estado = ? AND codigo_tienda = ? AND fecha BETWEEN ? AND ?";
+    private final static String INCIDENCIAS_BY_TIENDA = "SELECT * FROM incidencia WHERE codigo_tienda = ?";
     private ResultSet resultSet;
 
     public IncidenciaDB() {
@@ -107,7 +110,7 @@ public class IncidenciaDB {
     }
 
     /**
-     * LISTA LAS INCIDENCIAS A CARGO DE UN USUARIO_BODEGA
+     * LISTA LAS INCIDENCIAS A CARGO DE UN USUARIO_BODEGA POR ESTADO
      *
      * @param usuarioBodega
      * @param estado
@@ -136,6 +139,7 @@ public class IncidenciaDB {
     public ArrayList<Incidencia> getIncidencia(String usuarioBodega) {
         List<Incidencia> incidencias = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_BODEGA)) {
+            statement.setString(1, usuarioBodega);
             while (resultSet.next()) {
                 incidencias.add(getIncidencia(resultSet));
             }
@@ -158,6 +162,56 @@ public class IncidenciaDB {
     public ArrayList<Incidencia> getIncidenciaTiendaUsuario(String usuarioBodega, String codigoTienda) {
         List<Incidencia> incidencias = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_BODEGA_BY_TIENDA)) {
+            statement.setString(1, usuarioBodega);
+            statement.setString(2, codigoTienda);
+            while (resultSet.next()) {
+                incidencias.add(getIncidencia(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Incidencia>) incidencias;
+    }
+
+    /**
+     * Lista las incidencias por tienda
+     *
+     * @param codigoTienda
+     * @return lista las incidencias generadas por tiendas
+     */
+    public ArrayList<Incidencia> getIncidenciasByTienda(String codigoTienda) {
+        List<Incidencia> incidencias = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(INCIDENCIAS_BY_TIENDA)) {
+            statement.setString(1, codigoTienda);
+            while (resultSet.next()) {
+                incidencias.add(getIncidencia(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Incidencia>) incidencias;
+    }
+
+    /**
+     * Lista las incidencias por tienda, estado y en un intervalo de fechas.
+     *
+     * @param estado
+     * @param codigoTienda
+     * @param fecha1
+     * @param fecha2
+     * @return
+     */
+    public ArrayList<Incidencia> getIncidenciasByTienda(String estado, String codigoTienda, String fecha1, String fecha2) {
+        List<Incidencia> incidencias = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(INCIDENCIAS_BY_TIENDA_BY_ESTADO_FECHA)) {
+            statement.setString(1, estado);
+            statement.setString(2, codigoTienda);
+            statement.setString(3, fecha1);
+            statement.setString(4, fecha2);
             while (resultSet.next()) {
                 incidencias.add(getIncidencia(resultSet));
             }
