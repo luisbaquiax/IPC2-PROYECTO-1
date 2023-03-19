@@ -21,6 +21,7 @@ public class Envio implements Serializable {
     private String estado;
     private String codigoTienda;
     private String usuarioBodega;
+    private int idPedido;
     private ArrayList<DetalleEnvio> detalle;
 
     public Envio() {
@@ -36,8 +37,9 @@ public class Envio implements Serializable {
      * @param estado
      * @param codigoTienda
      * @param usuarioBodega
+     * @param idPedido
      */
-    public Envio(int id, String fechaSalida, String fechaLlegada, double total, String estado, String codigoTienda, String usuarioBodega) {
+    public Envio(int id, String fechaSalida, String fechaLlegada, double total, String estado, String codigoTienda, String usuarioBodega, int idPedido) {
         this.id = id;
         this.fechaSalida = fechaSalida;
         this.fechaLlegada = fechaLlegada;
@@ -45,6 +47,7 @@ public class Envio implements Serializable {
         this.estado = estado;
         this.codigoTienda = codigoTienda;
         this.usuarioBodega = usuarioBodega;
+        this.idPedido = idPedido;
     }
 
     /**
@@ -56,15 +59,17 @@ public class Envio implements Serializable {
      * @param estado
      * @param codigoTienda
      * @param usuarioBodega
+     * @param idPedido
      * @param detalle
      */
-    public Envio(String fechaSalida, String fechaLlegada, double total, String estado, String codigoTienda, String usuarioBodega, ArrayList<DetalleEnvio> detalle) {
+    public Envio(String fechaSalida, String fechaLlegada, double total, String estado, String codigoTienda, String usuarioBodega, int idPedido, ArrayList<DetalleEnvio> detalle) {
         this.fechaSalida = fechaSalida;
         this.fechaLlegada = fechaLlegada;
         this.total = total;
         this.estado = estado;
         this.codigoTienda = codigoTienda;
         this.usuarioBodega = usuarioBodega;
+        this.idPedido = idPedido;
         this.detalle = detalle;
     }
 
@@ -165,6 +170,7 @@ public class Envio implements Serializable {
     public void setUsuarioBodega(String usuarioBodega) {
         this.usuarioBodega = usuarioBodega;
     }
+    
 
     /**
      * @return the detalle
@@ -178,6 +184,20 @@ public class Envio implements Serializable {
      */
     public void setDetalle(ArrayList<DetalleEnvio> detalle) {
         this.detalle = detalle;
+    }
+
+    /**
+     * @return the idPedido
+     */
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    /**
+     * @param idPedido the idPedido to set
+     */
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
     }
 
 }

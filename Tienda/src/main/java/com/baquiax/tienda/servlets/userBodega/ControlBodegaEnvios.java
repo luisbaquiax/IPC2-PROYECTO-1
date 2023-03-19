@@ -173,6 +173,7 @@ public class ControlBodegaEnvios extends HttpServlet {
                 EstadoEnvioEnum.DESPACHADO.toString(),
                 pedido.getCodigoTienda(),
                 usuario.getCodigo(),
+                pedido.getId(),
                 null);
         this.listaDetallePedido = this.detallePedidoDB.getDetallePedidoByIdPedido(pedido);
         //
@@ -193,6 +194,7 @@ public class ControlBodegaEnvios extends HttpServlet {
                 EstadoEnvioEnum.DESPACHADO.toString(),
                 pedido.getCodigoTienda(),
                 usuario.getCodigo(),
+                pedido.getId(),
                 null);
         ingresarEnvio(this.listaDetallePedido, envio, request, response);
     }

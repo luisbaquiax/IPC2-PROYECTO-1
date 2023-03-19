@@ -80,13 +80,13 @@ public class CargaDatos {
     }
 
     public void subirDatos(ManejoDatosJSON manejoDatosJSON) throws ParseException {
-        subirProductos(manejoDatosJSON.productos);
-        subirTiendas(manejoDatosJSON.tiendas);
-        subirUsuarios(manejoDatosJSON.usuarios, manejoDatosJSON.usuarioBodegas, manejoDatosJSON.usuarioTiendas);
-        subirPedidos(manejoDatosJSON.pedidos);
-        subirEnvios(manejoDatosJSON.envios);
-        subirIncidencias(manejoDatosJSON.incidencias);
-        subirDevoluciones(manejoDatosJSON.devolucions);
+        subirProductos(manejoDatosJSON.getProductos());
+        subirTiendas(manejoDatosJSON.getTiendas());
+        subirUsuarios(manejoDatosJSON.getUsuarios(), manejoDatosJSON.getUsuarioBodegas(), manejoDatosJSON.getUsuarioTiendas());
+        subirPedidos(manejoDatosJSON.getPedidos());
+        subirEnvios(manejoDatosJSON.getEnvios());
+        subirIncidencias(manejoDatosJSON.getIncidencias());
+        subirDevoluciones(manejoDatosJSON.getDevolucions());
     }
 
     private void subirProductos(List<Producto> productos) {
@@ -144,7 +144,7 @@ public class CargaDatos {
 
     private void subirPedidos(List<Pedido> pedidos) {
         for (Pedido pedido : pedidos) {
-            if (this.pedidoDB.insert(pedido)) {
+            if (this.pedidoDB.insertFromFile(pedido)) {
                 for (DetallePedido detalleP : pedido.getDetalle()) {
                     this.detallePedidoDB.insert(detalleP);
                 }
@@ -154,7 +154,7 @@ public class CargaDatos {
 
     private void subirEnvios(List<Envio> envios) {
         for (Envio envio : envios) {
-            if (this.envioDB.inset(envio)) {
+            if (this.envioDB.insetFromFile(envio)) {
                 for (DetalleEnvio dE : envio.getDetalle()) {
                     this.detalleEnvioDB.insert(dE);
                 }
@@ -164,7 +164,7 @@ public class CargaDatos {
 
     private void subirIncidencias(List<Incidencia> incidencias) {
         for (Incidencia incidencia : incidencias) {
-            if (this.incidenciaDB.insert(incidencia)) {
+            if (this.incidenciaDB.insertFromFile(incidencia)) {
                 for (DetalleIncidencia dIncidencia : incidencia.getDetalle()) {
                     this.detalleIncidenciaDB.insert(dIncidencia);
                 }
@@ -174,7 +174,7 @@ public class CargaDatos {
 
     private void subirDevoluciones(List<Devolucion> devolucions) {
         for (Devolucion devolucion : devolucions) {
-            if (this.devolucionDB.inset(devolucion)) {
+            if (this.devolucionDB.insetFromFile(devolucion)) {
                 for (DetalleDevolucion dDevolucion : devolucion.getDetalle()) {
                     this.detalleDevolucionDB.inset(dDevolucion);
                 }

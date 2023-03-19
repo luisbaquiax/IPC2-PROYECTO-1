@@ -5,6 +5,7 @@
  */
 package com.baquiax.tienda.servlets.file;
 
+import com.baquiax.tienda.db.modelo.UsuarioDB;
 import com.baquiax.tienda.entidad.datos.CargaDatos;
 import com.baquiax.tienda.entidad.datos.ContenidoArchivoJSON;
 import com.baquiax.tienda.entidad.datos.ManejoDatosJSON;
@@ -35,11 +36,13 @@ public class ControlArchivo extends HttpServlet {
     private ContenidoArchivoJSON contenidoArchivoJSON;
     private ManejoDatosJSON manejoDatosJSON;
     private CargaDatos cargaDatos;
+    private UsuarioDB usuarioDB;
 
     public ControlArchivo() {
         this.contenidoArchivoJSON = new ContenidoArchivoJSON();
-        this.manejoDatosJSON = new ManejoDatosJSON();
         this.cargaDatos = new CargaDatos();
+        //base
+        this.usuarioDB = new UsuarioDB();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -54,6 +57,34 @@ public class ControlArchivo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("hola get");
+        String tarea = request.getParameter("tarea");
+        request.getSession().removeAttribute("msjeDatos");
+        switch (tarea) {
+            case "validarDatos":
+                if (usuarioDB.getUsers().isEmpty()) {
+                    response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                }
+                break;
+            case "subirDatos":
+                try {
+//            ManejoDatosJSON manejoDatos = (ManejoDatosJSON) request.getSession().getAttribute("manejoDatos");
+                if (manejoDatosJSON.getErrores().isEmpty()) {
+                    this.cargaDatos.subirDatos(this.manejoDatosJSON);
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                } else {
+                    request.getSession().setAttribute("msjeDatos", "Se debe corregir los errores en la entrada de datos");
+                    response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
+                }
+            } catch (ParseException | NullPointerException ex) {
+                response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
+                Logger.getLogger(ControlArchivo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+        }
+
     }
 
     /**
@@ -67,27 +98,25 @@ public class ControlArchivo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("hola post");
         try {
+            request.getSession().removeAttribute("manejoDatos");
             Part partes = request.getPart("archivo");
             InputStream inputStream = partes.getInputStream();
             BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream));
 
-            this.manejoDatosJSON.procesarInformacion(this.contenidoArchivoJSON.getContenidioArchivoJSON(buffer));
-        } catch (ParseException ex) {
+            this.manejoDatosJSON = new ManejoDatosJSON();
+            String contenido = this.contenidoArchivoJSON.getContenidioArchivoJSON(buffer);
+            System.out.println(contenido);
+            this.manejoDatosJSON.procesarInformacion(contenido);
 
+            request.getSession().setAttribute("manejoDatos", this.manejoDatosJSON);
+            response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
+        } catch (ParseException | NullPointerException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(ControlArchivo.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
         }
 
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -20,6 +20,7 @@ public class Devolucion implements Serializable {
     private double total;
     private String usuarioTienda;
     private String codigoTienda;
+    private int idEnvio;
     private ArrayList<DetalleDevolucion> detalle;
 
     public Devolucion() {
@@ -33,14 +34,16 @@ public class Devolucion implements Serializable {
      * @param total
      * @param usuarioTienda
      * @param codigoTienda
+     * @param idEnvio
      */
-    public Devolucion(int id, String fecha, String estado, double total, String usuarioTienda, String codigoTienda) {
+    public Devolucion(int id, String fecha, String estado, double total, String usuarioTienda, String codigoTienda, int idEnvio) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
         this.total = total;
         this.usuarioTienda = usuarioTienda;
         this.codigoTienda = codigoTienda;
+        this.idEnvio = idEnvio;
     }
 
     @Override
@@ -145,6 +148,20 @@ public class Devolucion implements Serializable {
      */
     public void setDetalle(ArrayList<DetalleDevolucion> detalle) {
         this.detalle = detalle;
+    }
+
+    /**
+     * @return the idEnvio
+     */
+    public int getIdEnvio() {
+        return idEnvio;
+    }
+
+    /**
+     * @param idEnvio the idEnvio to set
+     */
+    public void setIdEnvio(int idEnvio) {
+        this.idEnvio = idEnvio;
     }
 
 }

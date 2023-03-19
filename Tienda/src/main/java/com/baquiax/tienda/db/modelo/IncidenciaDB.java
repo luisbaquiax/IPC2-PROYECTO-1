@@ -17,14 +17,14 @@ import java.util.List;
  */
 public class IncidenciaDB {
 
-    private final static String INSERT = "INSERT INTO incidencia(fecha,estado,usuario_tienda,codigo_tienda) VALUES(?,?,?,?)";
-    private final static String INSERT_FROM_FILE = "INSERT INTO incidencia(id,fecha,estado,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?)";
+    private final static String INSERT = "INSERT INTO incidencia(fecha,estado,usuario_tienda,codigo_tienda,id_envio) VALUES(?,?,?,?,?)";
+    private final static String INSERT_FROM_FILE = "INSERT INTO incidencia(id,fecha,estado,usuario_tienda,codigo_tienda,id_envio) VALUES(?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE incidencia SET estado = ? WHERE id = ?";
     /**
      * Lista las incidencias por usuario_bodega y por estado
      */
     private final static String SELECT_BY_USUARIO_BODEGA_BY_ESTADO
-            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda, p.id_envio \n"
             + "FROM incidencia p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda WHERE b.codigo_usuario_bodega = ? AND p.estado = ?";
@@ -33,7 +33,7 @@ public class IncidenciaDB {
      * tiempo
      */
     private final static String SELECT_BY_USUARIO_BODEGA_BY_ESTADO_BY_TIENDA_BY_FECHA
-            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda, p.id_envio \n"
             + "FROM incidencia p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda "
@@ -43,7 +43,7 @@ public class IncidenciaDB {
             + "AND fecha BETWEEN ? AND ?";
 
     private final static String SELECT_BY_USUARIO_BODEGA
-            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda, p.id_envio \n"
             + "FROM incidencia p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda WHERE b.codigo_usuario_bodega = ?";
@@ -51,7 +51,7 @@ public class IncidenciaDB {
      *
      */
     private final static String SELECT_BY_USUARIO_BODEGA_BY_TIENDA
-            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.usuario_tienda, p.codigo_tienda, p.id_envio \n"
             + "FROM incidencia p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
@@ -79,6 +79,7 @@ public class IncidenciaDB {
             statement.setString(2, incidendcia.getEstado());
             statement.setString(3, incidendcia.getUsuarioTienda());
             statement.setString(4, incidendcia.getCodigoTienda());
+            statement.setInt(5, incidendcia.getIdEnvio());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -101,6 +102,7 @@ public class IncidenciaDB {
             statement.setString(3, incidendcia.getEstado());
             statement.setString(4, incidendcia.getUsuarioTienda());
             statement.setString(5, incidendcia.getCodigoTienda());
+            statement.setInt(6, incidendcia.getIdEnvio());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -288,6 +290,7 @@ public class IncidenciaDB {
                 resultSet.getString("fecha"),
                 resultSet.getString("estado"),
                 resultSet.getString("usuario_tienda"),
-                resultSet.getString("codigo_tienda"));
+                resultSet.getString("codigo_tienda"),
+                resultSet.getInt("id_envio"));
     }
 }

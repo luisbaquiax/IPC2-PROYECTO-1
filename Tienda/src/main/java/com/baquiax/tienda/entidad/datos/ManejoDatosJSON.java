@@ -8,6 +8,7 @@ package com.baquiax.tienda.entidad.datos;
 import com.baquiax.tienda.entidad.*;
 import com.baquiax.tienda.entidad.enumEntidad.*;
 import com.baquiax.tienda.entidad.manejadores.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,15 +26,15 @@ import org.json.simple.parser.ParseException;
 public class ManejoDatosJSON {
 
     //listas
-    public List<Producto> productos;
-    public List<Tienda> tiendas;
-    public List<Usuario> usuarios;
-    public List<Devolucion> devolucions;
-    public List<Incidencia> incidencias;
-    public List<Pedido> pedidos;
-    public List<UsuarioTienda> usuarioTiendas;
-    public List<UsuarioBodega> usuarioBodegas;
-    public List<Envio> envios;
+    private List<Producto> productos;
+    private List<Tienda> tiendas;
+    private List<Usuario> usuarios;
+    private List<Devolucion> devolucions;
+    private List<Incidencia> incidencias;
+    private List<Pedido> pedidos;
+    private List<UsuarioTienda> usuarioTiendas;
+    private List<UsuarioBodega> usuarioBodegas;
+    private List<Envio> envios;
 
     //errores
     private List<DatoError> errores;
@@ -85,7 +86,15 @@ public class ManejoDatosJSON {
         procesarEnvios(jsonObject);
         procesarIncidencias(jsonObject);
         procesarDevoluciones(jsonObject);
-        System.out.println(Arrays.toString(productos.toArray()));
+        System.out.println(Arrays.toString(getProductos().toArray()));
+        System.out.println(Arrays.toString(getTiendas().toArray()));
+        System.out.println(Arrays.toString(getUsuarios().toArray()));
+        System.out.println(Arrays.toString(getUsuarioBodegas().toArray()));
+        System.out.println(Arrays.toString(getProductos().toArray()));
+        System.out.println(Arrays.toString(getPedidos().toArray()));
+        System.out.println(Arrays.toString(getEnvios().toArray()));
+        System.out.println(Arrays.toString(getIncidencias().toArray()));
+        System.out.println(Arrays.toString(getDevolucions().toArray()));
 
     }
 
@@ -102,17 +111,17 @@ public class ManejoDatosJSON {
                         Double.parseDouble(detalleProducto.get("costo").toString()),
                         Double.parseDouble(detalleProducto.get("precio").toString()),
                         Integer.parseInt(detalleProducto.get("existencias").toString()));
-                if (manejoProductos.getProducto(p.getCodigo(), this.productos) == null) {
-                    this.productos.add(p);
+                if (manejoProductos.getProducto(p.getCodigo(), this.getProductos()) == null) {
+                    this.getProductos().add(p);
                 } else {
-                    this.errores.add(new DatoError("Producto repetido", p.toString()));
+                    this.getErrores().add(new DatoError("Producto repetido", p.toString()));
                 }
             } catch (NumberFormatException e) {
-                this.errores.add(new DatoError("Formato númerico erróneo",
+                this.getErrores().add(new DatoError("Formato númerico erróneo",
                         "PRODUCTO: " + detalleProducto.get("codigo").toString()
                         + ", " + detalleProducto.get("nombre").toString()));
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Producto en la posición: " + (i + 1)));
             }
         }
@@ -124,29 +133,32 @@ public class ManejoDatosJSON {
             try {
                 JSONObject tienda = (JSONObject) tiendas.get(i);
                 Tienda t = new Tienda(tienda.get("codigo").toString(), tienda.get("direccion").toString(), tienda.get("tipo").toString());
+                ArrayList<Producto> pTienda = new ArrayList<>();
+                t.setListaProductos(pTienda);
                 JSONArray catalogo = (JSONArray) jsonObject.get("productos");
 
                 for (int j = 0; j < catalogo.size(); j++) {
-                    JSONObject producto = (JSONObject) catalogo.get(i);
+                    JSONObject producto = (JSONObject) catalogo.get(j);
                     try {
                         Producto p = new Producto();
                         p.setCodigo(producto.get("codigo").toString());
                         p.setExistencia(Integer.parseInt(producto.get("existencias").toString()));
+                        pTienda.add(p);
                     } catch (NumberFormatException e) {
-                        this.errores.add(new DatoError("Formato númerico erróneo",
+                        this.getErrores().add(new DatoError("Formato númerico erróneo",
                                 "Producto de tienda: " + tienda.get("codigo")));
                     } catch (NullPointerException e) {
-                        this.errores.add(new DatoError("No existe dato.",
+                        this.getErrores().add(new DatoError("No existe dato.",
                                 "Producto en la posición: " + (j + 1) + " , de la tienda. " + tienda.get("codigo").toString()));
                     }
                 }
-                if (manejoTiendas.getTienda(t.getCodigo(), this.tiendas) == null) {
-                    this.tiendas.add(t);
+                if (manejoTiendas.getTienda(t.getCodigo(), this.getTiendas()) == null) {
+                    this.getTiendas().add(t);
                 } else {
-                    this.errores.add(new DatoError("Tienda repetido", t.toString()));
+                    this.getErrores().add(new DatoError("Tienda repetido", t.toString()));
                 }
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Tienda en la posición: " + (i + 1)));
             }
         }
@@ -165,13 +177,13 @@ public class ManejoDatosJSON {
                         admin.get("password").toString(),
                         true,
                         "");
-                if (manejoUsuario.getUser(usuario.getCodigo(), this.usuarios) == null) {
-                    this.usuarios.add(usuario);
+                if (manejoUsuario.getUser(usuario.getCodigo(), this.getUsuarios()) == null) {
+                    this.getUsuarios().add(usuario);
                 } else {
-                    this.errores.add(new DatoError("Usuario repetido", usuario.toString()));
+                    this.getErrores().add(new DatoError("Usuario repetido", usuario.toString()));
                 }
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Usuario administrador en la posición: " + (i + 1)));
             }
         }
@@ -191,18 +203,18 @@ public class ManejoDatosJSON {
                         usuarioTienda.get("password").toString(),
                         true,
                         usuarioTienda.get("email").toString());
-                if (manejoUsuario.getUser(usuario.getCodigo(), this.usuarios) == null) {
-                    this.usuarios.add(usuario);
+                if (manejoUsuario.getUser(usuario.getCodigo(), this.getUsuarios()) == null) {
+                    this.getUsuarios().add(usuario);
                     UsuarioTienda uTienda = new UsuarioTienda();
                     uTienda.setCodigo(usuario.getCodigo());
                     uTienda.setCodigoTienda(usuarioTienda.get("tienda").toString());
-                    this.usuarioTiendas.add(uTienda);
+                    this.getUsuarioTiendas().add(uTienda);
                 } else {
-                    this.errores.add(new DatoError("Usuario repetido", usuario.toString()));
+                    this.getErrores().add(new DatoError("Usuario repetido", usuario.toString()));
                 }
 
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Usuario tienda en la posición: " + (i + 1)));
             }
         }
@@ -222,13 +234,13 @@ public class ManejoDatosJSON {
                         supervisor.get("password").toString(),
                         true,
                         supervisor.get("email").toString());
-                if (manejoUsuario.getUser(usuario.getCodigo(), this.usuarios) == null) {
-                    this.usuarios.add(usuario);
+                if (manejoUsuario.getUser(usuario.getCodigo(), this.getUsuarios()) == null) {
+                    this.getUsuarios().add(usuario);
                 } else {
-                    this.errores.add(new DatoError("Usuario repetido", usuario.toString()));
+                    this.getErrores().add(new DatoError("Usuario repetido", usuario.toString()));
                 }
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Usuario supervisor en la posición: " + (i + 1)));
             }
         }
@@ -248,39 +260,40 @@ public class ManejoDatosJSON {
                         true,
                         bodeguero.get("email").toString());
 
-                UsuarioBodega uBodega = new UsuarioBodega();
-                uBodega.setCodigo(usuario.getCodigo());
+                UsuarioBodega userBodega = new UsuarioBodega();
+                userBodega.setCodigo(usuario.getCodigo());
 
-                List<Tienda> tBoedga = new ArrayList<>();
-                uBodega.setTiendas((ArrayList<Tienda>) tBoedga);
+                List<Tienda> tiendasBodeguero = new ArrayList<>();
+                userBodega.setTiendas((ArrayList<Tienda>) tiendasBodeguero);
 
-                JSONArray tiendasB = (JSONArray) bodeguero.get("tiendas");
-                for (int j = 0; j < tiendasB.size(); j++) {
+                JSONArray tiendasBodega = (JSONArray) bodeguero.get("tiendas");
+                for (int j = 0; j < tiendasBodega.size(); j++) {
                     System.out.println();
                     Tienda tU = new Tienda();
-                    tU.setCodigo(tiendasB.get(j).toString());
-                    if (manejoTiendas.getTienda(tiendasB.get(j).toString(), this.tiendas) != null) {
-                        for (UsuarioBodega usBodega : this.usuarioBodegas) {
-                            if (manejoTiendas.getTienda(tiendasB.get(j).toString(), uBodega.getTiendas()) == null) {
-                                uBodega.getTiendas().add(tU);
+                    tU.setCodigo(tiendasBodega.get(j).toString());
+                    //corregir este método
+                    if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), this.tiendas) != null) {
+                        for (UsuarioBodega usBodega : this.getUsuarioBodegas()) {
+                            if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), userBodega.getTiendas()) == null) {
+                                userBodega.getTiendas().add(tU);
                                 break;
                             } else {
-                                this.errores.add(new DatoError("Tienda asiganada a bodeguero.", "La tienda ya le pertenece a otro usuario."));
+                                this.getErrores().add(new DatoError("Tienda asiganada a bodeguero.", "La tienda ya le pertenece a otro usuario."));
                                 break;
                             }
                         }
                     } else {
-                        this.errores.add(new DatoError("No existe dato", "La tienda no existe en la lista de tiendas"));
+                        this.getErrores().add(new DatoError("No existe dato", "La tienda no existe en la lista de tiendas"));
                     }
                 }
                 if (manejoUsuario.getUser(usuario.getCodigo(), this.usuarios) == null) {
-                    this.usuarios.add(usuario);
-                    this.usuarioBodegas.add(uBodega);
+                    this.getUsuarios().add(usuario);
+                    this.getUsuarioBodegas().add(userBodega);
                 } else {
-                    this.errores.add(new DatoError("Usuario repetido", usuario.toString()));
+                    this.getErrores().add(new DatoError("Usuario repetido", usuario.toString()));
                 }
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato.",
+                this.getErrores().add(new DatoError("No existe dato.",
                         "Usuario de bodega en la posición: " + (i + 1)));
             }
         }
@@ -313,24 +326,24 @@ public class ManejoDatosJSON {
                                 Double.parseDouble(productoPedido.get("costoTotal").toString())));
 
                     } catch (NumberFormatException e) {
-                        this.errores.add(new DatoError("Fómato númerico inválido",
+                        this.getErrores().add(new DatoError("Fómato númerico inválido",
                                 "Producto en pedido: " + p.getId()));
                     } catch (NullPointerException e) {
-                        this.errores.add(new DatoError("No existe dato.",
+                        this.getErrores().add(new DatoError("No existe dato.",
                                 "Producto en pedido: " + p.getId()));
                     }
 
                 }
-                if (manejoPedido.getPedido(p.getId(), this.pedidos) == null) {
-                    this.pedidos.add(p);
+                if (manejoPedido.getPedido(p.getId(), this.getPedidos()) == null) {
+                    this.getPedidos().add(p);
                 } else {
-                    this.errores.add(new DatoError("Pedido repetido", p.toString()));
+                    this.getErrores().add(new DatoError("Pedido repetido", p.toString()));
                 }
             } catch (NumberFormatException e) {
-                this.errores.add(new DatoError("Fómato númerico inválido",
+                this.getErrores().add(new DatoError("Fómato númerico inválido",
                         "Pedido en la posición: " + (i + 1)));
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("FNo existe dato",
+                this.getErrores().add(new DatoError("FNo existe dato",
                         "Pedido en la posición: " + (i + 1)));
             }
         }
@@ -341,47 +354,54 @@ public class ManejoDatosJSON {
         JSONArray envios = (JSONArray) jsonObject.get("envios");
         for (int i = 0; i < envios.size(); i++) {
             try {
-                JSONObject envio = (JSONObject) envios.get(i);
-                Envio en = new Envio(
-                        Integer.parseInt(envio.get("id").toString()),
-                        envio.get("fechaSalida").toString(),
-                        envio.get("fechaRecibido").toString(),
-                        Double.parseDouble(envio.get("total").toString()),
-                        envio.get("estado").toString(),
-                        envio.get("tienda").toString(),
-                        envio.get("usuario").toString());
+                JSONObject jsonEnvio = (JSONObject) envios.get(i);
+                Envio envio = new Envio(
+                        Integer.parseInt(jsonEnvio.get("id").toString()),
+                        jsonEnvio.get("fechaSalida").toString(),
+                        jsonEnvio.get("fechaRecibido").toString(),
+                        Double.parseDouble(jsonEnvio.get("total").toString()),
+                        jsonEnvio.get("estado").toString(),
+                        jsonEnvio.get("tienda").toString(),
+                        jsonEnvio.get("usuario").toString(),
+                        Integer.parseInt(jsonEnvio.get("pedido").toString()));
 
-                JSONArray productosEnvio = (JSONArray) envio.get("productos");
-                ArrayList<DetalleEnvio> pEnvio = new ArrayList<>();
-                en.setDetalle(pEnvio);
+                if (jsonEnvio.get("fechaRecibido").toString().isBlank()) {
+                    envio.setFechaLlegada(envio.getFechaSalida());
+                }
+                JSONArray productosEnvio = (JSONArray) jsonEnvio.get("productos");
+                ArrayList<DetalleEnvio> productsEnvio = new ArrayList<>();
+                envio.setDetalle(productsEnvio);
 
                 for (int j = 0; j < productosEnvio.size(); j++) {
                     JSONObject productoEnvio = (JSONObject) productosEnvio.get(j);
                     try {
-                        pEnvio.add(new DetalleEnvio(
-                                en.getId(),
+                        productsEnvio.add(new DetalleEnvio(
+                                envio.getId(),
                                 productoEnvio.get("codigo").toString(),
                                 Integer.parseInt(productoEnvio.get("cantidad").toString()),
                                 Double.parseDouble(productoEnvio.get("costoU").toString()),
                                 Double.parseDouble(productoEnvio.get("costoTotal").toString())));
                     } catch (NumberFormatException ex) {
-                        this.errores.add(new DatoError("Fómato númerico inválido",
-                                "Producto del envio. ID envío: " + en.getId()));
+                        this.getErrores().add(new DatoError("Fómato númerico inválido",
+                                "Producto del envio. ID envío: " + envio.getId()));
                     } catch (NullPointerException e2) {
-                        this.errores.add(new DatoError("FNo existe dato",
-                                "Producto del envio. ID envío: " + en.getId()));
+                        this.getErrores().add(new DatoError("FNo existe dato",
+                                "Producto del envio. ID envío: " + envio.getId()));
                     }
                 }
-                if (manejoEnvio.getEnvio(en.getId(), this.envios) == null) {
-                    this.envios.add(en);
+                if (manejoEnvio.getEnvio(envio.getId(), this.getEnvios()) == null) {
+                    this.getEnvios().add(envio);
                 } else {
-                    this.errores.add(new DatoError("Envio repetido", en.toString()));
+                    this.getErrores().add(new DatoError("Envio repetido", envio.toString()));
                 }
             } catch (NumberFormatException e) {
-                this.errores.add(new DatoError("Fómato númerico inválido",
+                this.getErrores().add(new DatoError("Fómato númerico inválido",
                         "Envio en la posición: " + (i + 1)));
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("FNo existe dato",
+                this.getErrores().add(new DatoError("FNo existe dato",
+                        "Envio en la posición: " + (i + 1)));
+            } catch (Exception e) {
+                this.getErrores().add(new DatoError("Fomato inválido",
                         "Envio en la posición: " + (i + 1)));
             }
 
@@ -402,7 +422,8 @@ public class ManejoDatosJSON {
                         incidencia.get("fecha").toString(),
                         incidencia.get("estado").toString(),
                         incidencia.get("usuario").toString(),
-                        incidencia.get("tienda").toString());
+                        incidencia.get("tienda").toString(),
+                        Integer.parseInt(incidencia.get("envio").toString()));
 
                 ArrayList<DetalleIncidencia> pIncidencia = new ArrayList<>();
                 inc.setDetalle(pIncidencia);
@@ -417,21 +438,21 @@ public class ManejoDatosJSON {
                                 Integer.parseInt(productoIncidencia.get("cantidad").toString()),
                                 productoIncidencia.get("motivo").toString()));
                     } catch (NumberFormatException e) {
-                        this.errores.add(new DatoError("Formato numérico erróneo", "Detalle de incidencia: " + (j + 1)));
+                        this.getErrores().add(new DatoError("Formato numérico erróneo", "Detalle de incidencia: " + (j + 1)));
                     } catch (NullPointerException e) {
-                        this.errores.add(new DatoError("No existe el dato", "Detalle de incidencia: " + (j + 1)));
+                        this.getErrores().add(new DatoError("No existe el dato", "Detalle de incidencia: " + (j + 1)));
                     }
                 }
-                if (manejoIncidencias.getIncidencia(inc.getId(), this.incidencias) == null) {
-                    this.incidencias.add(inc);
+                if (manejoIncidencias.getIncidencia(inc.getId(), this.getIncidencias()) == null) {
+                    this.getIncidencias().add(inc);
                 } else {
-                    this.errores.add(new DatoError("Incidencia reptida.", inc.toString()));
+                    this.getErrores().add(new DatoError("Incidencia reptida.", inc.toString()));
                 }
 
             } catch (NumberFormatException e) {
-                this.errores.add(new DatoError("Formato numérico inválido.", "Incidencia en la posición:  " + (i + 1)));
+                this.getErrores().add(new DatoError("Formato numérico inválido.", "Incidencia en la posición:  " + (i + 1)));
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato de la incidencia", "Incidencia en la posición:  " + (i + 1)));
+                this.getErrores().add(new DatoError("No existe dato de la incidencia", "Incidencia en la posición:  " + (i + 1)));
             }
         }
     }
@@ -439,7 +460,6 @@ public class ManejoDatosJSON {
     private void procesarDevoluciones(JSONObject jsonObject) {
         JSONArray devoluciones = (JSONArray) jsonObject.get("devoluciones");
         for (int i = 0; i < devoluciones.size(); i++) {
-
             try {
                 JSONObject devolucion = (JSONObject) devoluciones.get(i);
                 Devolucion dev = new Devolucion(
@@ -448,7 +468,8 @@ public class ManejoDatosJSON {
                         devolucion.get("estado").toString(),
                         Double.parseDouble(devolucion.get("total").toString()),
                         devolucion.get("usuario").toString(),
-                        devolucion.get("tienda").toString());
+                        devolucion.get("tienda").toString(),
+                        Integer.parseInt(devolucion.get("envio").toString()));
                 ArrayList<DetalleDevolucion> listDetalle = new ArrayList<>();
                 dev.setDetalle(listDetalle);
 
@@ -464,22 +485,101 @@ public class ManejoDatosJSON {
                                 productoDevolucion.get("motivo").toString(),
                                 Double.parseDouble(productoDevolucion.get("costoTotal").toString())));
                     } catch (NumberFormatException e) {
-                        this.errores.add(new DatoError("Formato numérico erróneo", "Detalle de devolución: " + (j + 1)));
+                        this.getErrores().add(new DatoError("Formato numérico erróneo", "Detalle de devolución: " + (j + 1)));
                     } catch (NullPointerException e) {
-                        this.errores.add(new DatoError("No existe el dato", "Detalle de devolución: " + (j + 1)));
+                        this.getErrores().add(new DatoError("No existe el dato", "Detalle de devolución: " + (j + 1)));
                     }
                 }
-                if (manejoDevoluciones.getDevolucion(dev.getId(), this.devolucions) == null) {
-                    this.devolucions.add(dev);
+                if (manejoDevoluciones.getDevolucion(dev.getId(), this.getDevolucions()) == null) {
+                    this.getDevolucions().add(dev);
                 } else {
-                    this.errores.add(new DatoError("Devolución repetida.", dev.toString()));
+                    this.getErrores().add(new DatoError("Devolución repetida.", dev.toString()));
                 }
             } catch (NumberFormatException e) {
-                this.errores.add(new DatoError("Formato numérico inválido.", "Devolución en la posición:  " + (i + 1)));
+                this.getErrores().add(new DatoError("Formato numérico inválido.", "Devolución en la posición:  " + (i + 1)));
             } catch (NullPointerException e) {
-                this.errores.add(new DatoError("No existe dato de la incidencia", "Devolución en la posición:  " + (i + 1)));
+                this.getErrores().add(new DatoError("No existe dato de la incidencia", "Devolución en la posición:  " + (i + 1)));
             }
         }
+    }
+
+    private boolean darFomatoFecha(String fecha) {
+        try {
+            Date.valueOf(fecha);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * @return the productos
+     */
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    /**
+     * @return the tiendas
+     */
+    public List<Tienda> getTiendas() {
+        return tiendas;
+    }
+
+    /**
+     * @return the usuarios
+     */
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    /**
+     * @return the devolucions
+     */
+    public List<Devolucion> getDevolucions() {
+        return devolucions;
+    }
+
+    /**
+     * @return the incidencias
+     */
+    public List<Incidencia> getIncidencias() {
+        return incidencias;
+    }
+
+    /**
+     * @return the pedidos
+     */
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    /**
+     * @return the usuarioTiendas
+     */
+    public List<UsuarioTienda> getUsuarioTiendas() {
+        return usuarioTiendas;
+    }
+
+    /**
+     * @return the usuarioBodegas
+     */
+    public List<UsuarioBodega> getUsuarioBodegas() {
+        return usuarioBodegas;
+    }
+
+    /**
+     * @return the envios
+     */
+    public List<Envio> getEnvios() {
+        return envios;
+    }
+
+    /**
+     * @return the errores
+     */
+    public List<DatoError> getErrores() {
+        return errores;
     }
 
 }

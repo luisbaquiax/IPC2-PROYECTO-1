@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class EnvioDB {
 
-    private final static String INSERT = "INSERT INTO envio(fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega) VALUES(?,?,?,?,?,?)";
-    private final static String INSERT_FROM_FILE = "INSERT INTO envio(id,fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega) VALUES(?,?,?,?,?,?,?)";
+    private final static String INSERT = "INSERT INTO envio(fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega,id_pedido) VALUES(?,?,?,?,?,?,?)";
+    private final static String INSERT_FROM_FILE = "INSERT INTO envio(id,fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega,id_pedido) VALUES(?,?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE envio SET fecha_salida = ?,fecha_llegada = ?, total = ?, estado = ? WHERE id = ?";
     private final static String SELECT_BY_TIENDA_BY_ESTADO = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ?";
 
@@ -57,6 +57,7 @@ public class EnvioDB {
             statement.setString(4, envio.getEstado());
             statement.setString(5, envio.getCodigoTienda());
             statement.setString(6, envio.getUsuarioBodega());
+            statement.setInt(7, envio.getIdPedido());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -80,6 +81,7 @@ public class EnvioDB {
             statement.setString(5, envio.getEstado());
             statement.setString(6, envio.getCodigoTienda());
             statement.setString(7, envio.getUsuarioBodega());
+            statement.setInt(8, envio.getIdPedido());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -236,6 +238,7 @@ public class EnvioDB {
                 resultSet.getDouble("total"),
                 resultSet.getString("estado"),
                 resultSet.getString("codigo_tienda"),
-                resultSet.getString("usuario_bodega"));
+                resultSet.getString("usuario_bodega"),
+                resultSet.getInt("id_pedido"));
     }
 }

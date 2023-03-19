@@ -19,14 +19,14 @@ import java.util.List;
  */
 public class DevolucionDB {
 
-    private final static String INSERT = "INSERT INTO devolucion(fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?)";
-    private final static String INSERT_FROM_FILE = "INSERT INTO devolucion(id,fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?,?)";
+    private final static String INSERT = "INSERT INTO devolucion(fecha,estado,total,usuario_tienda,codigo_tienda,id_envio) VALUES(?,?,?,?,?,?)";
+    private final static String INSERT_FROM_FILE = "INSERT INTO devolucion(id,fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE devolucion SET fecha = ?, estado = ? WHERE id = ?";
     /**
      * Lista las devoluciones por usuario_bodega por estado
      */
     private final static String DEVOLUCIONES_BY_BODEGA_BY_ESTADO
-            = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda, p.id_envio\n"
             + "FROM devolucion p\n"
             + "LEFT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
@@ -35,7 +35,7 @@ public class DevolucionDB {
      * Lista las devoluciones por usuario_bodega por estado y por tienda
      */
     private final static String SELECT_BY_USUARIO_AND_ESTADO_AND_TIENDA
-            = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda \n"
+            = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda, p.id_envio \n"
             + "FROM devolucion p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
@@ -57,7 +57,7 @@ public class DevolucionDB {
      *
      */
     private final static String REPORTE_BODEGA_DEVOLUCIONES_TIENDA_BY_ESTADO_BY_FECHA_BY_TIENDA
-            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda\n"
+            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda, d.id_envio\n"
             + "FROM devolucion d\n"
             + "LEFT JOIN bodega_tienda b \n"
             + "ON d.codigo_tienda = b.codigo_tienda "
@@ -67,7 +67,7 @@ public class DevolucionDB {
             + "AND d.codigo_tienda = ?";
 
     private final static String REPORTE_BODEGA_DEVOLUCIONES
-            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda\n"
+            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda, d.id_envio\n"
             + "FROM devolucion d\n"
             + "LEFT JOIN bodega_tienda b \n"
             + "ON d.codigo_tienda = b.codigo_tienda "
@@ -90,6 +90,7 @@ public class DevolucionDB {
             statement.setDouble(3, devolucion.getTotal());
             statement.setString(4, devolucion.getUsuarioTienda());
             statement.setString(5, devolucion.getCodigoTienda());
+            statement.setInt(6, devolucion.getIdEnvio());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -112,6 +113,7 @@ public class DevolucionDB {
             statement.setDouble(4, devolucion.getTotal());
             statement.setString(5, devolucion.getUsuarioTienda());
             statement.setString(6, devolucion.getCodigoTienda());
+            statement.setInt(7, devolucion.getIdEnvio());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -344,7 +346,8 @@ public class DevolucionDB {
                 resultSet.getString("estado"),
                 resultSet.getDouble("total"),
                 resultSet.getString("usuario_tienda"),
-                resultSet.getString("codigo_tienda"));
+                resultSet.getString("codigo_tienda"),
+                resultSet.getInt("id_envio"));
     }
 
 }

@@ -20,3 +20,7 @@ and open the template in the editor.
         font-size: 3.5rem;
     }
 }
+.contenedor {
+  position: relative;
+}
+

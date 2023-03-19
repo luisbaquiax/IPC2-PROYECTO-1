@@ -19,6 +19,7 @@ public class Incidencia implements Serializable {
     private String estado;
     private String usuarioTienda;
     private String codigoTienda;
+    private int idEnvio;
     private ArrayList<DetalleIncidencia> detalle;
 
     /**
@@ -28,13 +29,15 @@ public class Incidencia implements Serializable {
      * @param estado
      * @param usuarioTienda
      * @param codigoTienda
+     * @param idEnvio
      */
-    public Incidencia(int id, String fecha, String estado, String usuarioTienda, String codigoTienda) {
+    public Incidencia(int id, String fecha, String estado, String usuarioTienda, String codigoTienda, int idEnvio) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
         this.usuarioTienda = usuarioTienda;
         this.codigoTienda = codigoTienda;
+        this.idEnvio = idEnvio;
     }
 
     @Override
@@ -124,6 +127,20 @@ public class Incidencia implements Serializable {
      */
     public void setDetalle(ArrayList<DetalleIncidencia> detalle) {
         this.detalle = detalle;
+    }
+
+    /**
+     * @return the idEnvio
+     */
+    public int getIdEnvio() {
+        return idEnvio;
+    }
+
+    /**
+     * @param idEnvio the idEnvio to set
+     */
+    public void setIdEnvio(int idEnvio) {
+        this.idEnvio = idEnvio;
     }
 
 }

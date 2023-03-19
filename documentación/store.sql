@@ -104,15 +104,42 @@ CREATE TABLE IF NOT EXISTS detalle_pedido(
     FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS envio(
+    id INT AUTO_INCREMENT NOT NULL,
+    fecha_salida DATE NOT NULL,
+    fecha_llegada DATE,
+    total DOUBLE NOT NULL,
+    estado VARCHAR(45) NOT NULL,
+    codigo_tienda VARCHAR(20) NOT NULL,
+    usuario_bodega VARCHAR(20) NOT NULL,
+    id_pedido INT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE,
+    FOREIGN KEY(usuario_bodega) REFERENCES usuario_bodega(codigo) ON UPDATE CASCADE,
+    FOREIGN KEY(id_pedido) REFERENCES pedido(id) ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS detalle_envio(
+    id_envio INT NOT NULL,
+    codigo_producto VARCHAR(20) NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DOUBLE NOT NULL,
+    PRIMARY KEY(id_envio, codigo_producto),
+    FOREIGN KEY(id_envio) REFERENCES envio(id) ON UPDATE CASCADE,
+    FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS incidencia(
     id INT AUTO_INCREMENT NOT NULL,
     fecha DATE NOT NULL,
     estado VARCHAR(45) NOT NULL,
     usuario_tienda VARCHAR(20) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
+    id_envio INT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(usuario_tienda) REFERENCES usuario_tienda(codigo) ON UPDATE CASCADE,
-    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE
+    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE,
+    FOREIGN KEY(id_envio) REFERENCES envio(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS detalle_incidencia(
@@ -132,9 +159,11 @@ CREATE TABLE IF NOT EXISTS devolucion(
     total DOUBLE NOT NULL,
     usuario_tienda VARCHAR(20) NOT NULL,
     codigo_tienda VARCHAR(20) NOT NULL,
+    id_envio INT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(usuario_tienda) REFERENCES usuario_tienda(codigo) ON UPDATE CASCADE,
-    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE
+    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE,
+    FOREIGN KEY(id_envio) REFERENCES envio(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS detalle_devolucion(
@@ -148,28 +177,6 @@ CREATE TABLE IF NOT EXISTS detalle_devolucion(
     FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS envio(
-    id INT AUTO_INCREMENT NOT NULL,
-    fecha_salida DATE NOT NULL,
-    fecha_llegada DATE,
-    total DOUBLE NOT NULL,
-    estado VARCHAR(45) NOT NULL,
-    codigo_tienda VARCHAR(20) NOT NULL,
-    usuario_bodega VARCHAR(20) NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(codigo_tienda) REFERENCES tienda(codigo) ON UPDATE CASCADE,
-    FOREIGN KEY(usuario_bodega) REFERENCES usuario_bodega(codigo) ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS detalle_envio(
-    id_envio INT NOT NULL,
-    codigo_producto VARCHAR(20) NOT NULL,
-    cantidad INT NOT NULL,
-    precio_unitario DOUBLE NOT NULL,
-    PRIMARY KEY(id_envio, codigo_producto),
-    FOREIGN KEY(id_envio) REFERENCES envio(id) ON UPDATE CASCADE,
-    FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
-);
 CREATE TABLE IF NOT EXISTS supervision(
     id INT AUTO_INCREMENT NOT NULL,
     codigo_supervisor VARCHAR(20) NOT NULL,

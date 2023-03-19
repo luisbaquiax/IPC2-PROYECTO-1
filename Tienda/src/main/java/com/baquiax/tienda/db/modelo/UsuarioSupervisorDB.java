@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class UsuarioSupervisorDB {
 
-    private final static String INSERT = "INSERT INTO usuario_supervisor(codigo,email) VALUES(?,?)";
+    private final static String INSERT = "INSERT INTO usuario_supervisor(codigo) VALUES(?)";
 
     public UsuarioSupervisorDB() {
     }
@@ -29,7 +29,6 @@ public class UsuarioSupervisorDB {
     public boolean insert(UsuarioSupervisor usuarioSupervisor) {
         try (PreparedStatement stamtment = ConeccionDB.getConnection().prepareStatement(INSERT)) {
             stamtment.setString(1, usuarioSupervisor.getCodigo());
-            stamtment.setString(2, usuarioSupervisor.getEmail());
             stamtment.executeUpdate();
 
             stamtment.close();
