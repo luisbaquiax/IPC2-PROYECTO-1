@@ -41,6 +41,7 @@ public class PedidoDB {
             + "FROM pedido p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda WHERE b.codigo_usuario_bodega = ?";
+    
     private final static String PEDIDO_BY_USUARIO_BODEGA_BY_TIENDA
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor \n"
             + "FROM pedido p\n"

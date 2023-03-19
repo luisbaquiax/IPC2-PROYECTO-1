@@ -22,25 +22,56 @@ public class DevolucionDB {
     private final static String INSERT = "INSERT INTO devolucion(fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?)";
     private final static String INSERT_FROM_FILE = "INSERT INTO devolucion(id,fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE devolucion SET fecha = ?, estado = ? WHERE id = ?";
-
-    private final static String SELECT_BY_USUARIO_AND_ESTADO
+    /**
+     * Lista las devoluciones por usuario_bodega por estado
+     */
+    private final static String DEVOLUCIONES_BY_BODEGA_BY_ESTADO
             = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda \n"
             + "FROM devolucion p\n"
-            + "RIGHT JOIN bodega_tienda b\n"
+            + "LEFT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
             + "WHERE b.codigo_usuario_bodega = ? AND p.estado = ?";
-
+    /**
+     * Lista las devoluciones por usuario_bodega por estado y por tienda
+     */
     private final static String SELECT_BY_USUARIO_AND_ESTADO_AND_TIENDA
             = "SELECT p.id, p.fecha, p.estado, p.total, p.usuario_tienda, p.codigo_tienda \n"
             + "FROM devolucion p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda \n"
             + "WHERE b.codigo_usuario_bodega = ? AND p.estado = ? AND p.codigo_tienda = ?";
-
+    /**
+     * Lista devoluciones por tienda
+     */
     private final static String DEVOLUCIONES_BY_TIENDA
             = "SELECT * FROM devolucion WHERE codigo_tienda = ?";
+    /**
+     * Lista devolciones por tienda en un intervalo de fecha
+     */
     private final static String DEVOLUCIONES_BY_TIENDA_FECHA
             = "SELECT * FROM devolucion WHERE estado = ? AND codigo_tienda = ? AND fecha BETWEEN ? AND ?";
+
+    /**
+     * Reporte de devoluciones de una tienda en específico en un intervalo de
+     * tiempo por estado, de bodega lo puede ver
+     *
+     */
+    private final static String REPORTE_BODEGA_DEVOLUCIONES_TIENDA_BY_ESTADO_BY_FECHA_BY_TIENDA
+            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda\n"
+            + "FROM devolucion d\n"
+            + "LEFT JOIN bodega_tienda b \n"
+            + "ON d.codigo_tienda = b.codigo_tienda "
+            + "WHERE b.codigo_usuario_bodega = ? "
+            + "AND d.estado = ? "
+            + "AND d.fecha BETWEEN ? AND ?"
+            + "AND d.codigo_tienda = ?";
+
+    private final static String REPORTE_BODEGA_DEVOLUCIONES
+            = "SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda, d.codigo_tienda\n"
+            + "FROM devolucion d\n"
+            + "LEFT JOIN bodega_tienda b \n"
+            + "ON d.codigo_tienda = b.codigo_tienda "
+            + "WHERE b.codigo_usuario_bodega = ? ";
 
     private ResultSet resultSet;
 
@@ -113,14 +144,12 @@ public class DevolucionDB {
      * Lista las devoluciones a cargo del usuario de bodega
      *
      * @param usuarioBodega
-     * @param usuarioTienda
-     * @param usuarioTienda
      * @param estado
      * @return
      */
     public ArrayList<Devolucion> getDevoluciones(String usuarioBodega, String estado) {
         List<Devolucion> devolucions = new ArrayList<>();
-        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_AND_ESTADO)) {
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(DEVOLUCIONES_BY_BODEGA_BY_ESTADO)) {
             statement.setString(1, usuarioBodega);
             statement.setString(2, estado);
             resultSet = statement.executeQuery();
@@ -145,7 +174,7 @@ public class DevolucionDB {
      */
     public ArrayList<Devolucion> getDevoluciones(String usuarioBodega, String estado, String codigoTienda) {
         List<Devolucion> devolucions = new ArrayList<>();
-        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_AND_ESTADO)) {
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_AND_ESTADO_AND_TIENDA)) {
             statement.setString(1, usuarioBodega);
             statement.setString(2, estado);
             statement.setString(3, codigoTienda);
@@ -171,7 +200,7 @@ public class DevolucionDB {
      */
     public ArrayList<Devolucion> getDevolucionesByTienda(String usuarioBodega, String estado, String codigoTienda) {
         List<Devolucion> devolucions = new ArrayList<>();
-        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_USUARIO_AND_ESTADO)) {
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(DEVOLUCIONES_BY_BODEGA_BY_ESTADO)) {
             statement.setString(1, usuarioBodega);
             statement.setString(2, estado);
             statement.setString(3, codigoTienda);
@@ -226,6 +255,76 @@ public class DevolucionDB {
             statement.setString(2, codigoTienda);
             statement.setString(3, fecha1);
             statement.setString(4, fecha2);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                devolucions.add(getDevolucion(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Devolucion>) devolucions;
+    }
+
+    /**
+     * Lista de devoluciones generadas por tienda, por usuario_bodega, en un
+     * <br>
+     * query:<br>
+     * <br>SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda,
+     * d.codigo_tienda
+     * <br>FROM devolucion d
+     * <br>LEFT JOIN bodega_tienda b
+     * <br>ON d.codigo_tienda = b.codigo_tienda
+     * <br>WHERE b.codigo_usuario_bodega = ?
+     *
+     * @param usuarioBodega
+     * @return
+     */
+    public ArrayList<Devolucion> getListaDevolcionesPorTienda(String usuarioBodega) {
+        List<Devolucion> devolucions = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_BODEGA_DEVOLUCIONES)) {
+            statement.setString(1, usuarioBodega);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                devolucions.add(getDevolucion(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Devolucion>) devolucions;
+    }
+
+    /**
+     * Lista de devoluciones generadas por tienda, por estado y por
+     * usuario_bodega, en un intervalo de fecha
+     * <br>
+     * query:<br>
+     * <br>SELECT d.id, d.fecha, d.estado, d.total, d.usuario_tienda,
+     * d.codigo_tienda
+     * <br>FROM devolucion d
+     * <br>LEFT JOIN bodega_tienda b
+     * <br>ON d.codigo_tienda = b.codigo_tienda
+     * <br>WHERE b.codigo_usuario_bodega = ?
+     * <br>AND d.estado = ? AND d.fecha BETWEEN ? AND ?
+     *
+     * @param estado
+     * @param usuarioBodega
+     * @param fecha1
+     * @param fecha2
+     * @param tienda
+     * @return
+     */
+    public ArrayList<Devolucion> getListaDevolcionesPorTienda(String estado, String usuarioBodega, String fecha1, String fecha2, String tienda) {
+        List<Devolucion> devolucions = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_BODEGA_DEVOLUCIONES_TIENDA_BY_ESTADO_BY_FECHA_BY_TIENDA)) {
+            statement.setString(1, estado);
+            statement.setString(2, usuarioBodega);
+            statement.setString(3, fecha1);
+            statement.setString(4, fecha2);
+            statement.setString(5, tienda);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 devolucions.add(getDevolucion(resultSet));

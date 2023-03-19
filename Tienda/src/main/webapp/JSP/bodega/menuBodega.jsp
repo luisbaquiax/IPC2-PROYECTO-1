@@ -20,10 +20,10 @@
                     <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/ControlBodegaEnvios?tarea=listarPedidosSolicitados">Listado de pedidos solicitados</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="envios.jsp">Solucionar incidencias</a>
+                    <a class="nav-link" href="#">Solucionar incidencias</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Lista de devoluciones</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/ControlBodegaDevoluciones?tarea=listarDevoluciones">Lista de devoluciones</a>
                 </li>
                 <div class="dropdown mx-3 mt-2">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,9 +35,8 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlBodegaReporteEnvios?tarea=listarEnviosGenerados">Reporte de envíos generados</a></li>
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReporteIncidencias?tarea=reporteIncidencias">Reporte  de incidencias solucionadas</a></li>
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReporteDevoluciones?tarea=reporteDevoluciones">Reporte  de devoluciones</a></li>
-                        <li><a class="dropdown-item" href="#">Reporte  de envións recibidos</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlBodegaReporteIncidencias?tarea=listarIncidenciasSolucionadas">Reporte  de incidencias solucionadas</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlBodegaReporteDevoluciones?tarea=listarDevoluciones">Reporte  de devoluciones</a></li>
                     </ul>
                 </div>
             </ul>

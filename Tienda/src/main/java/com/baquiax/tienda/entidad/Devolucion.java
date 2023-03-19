@@ -22,6 +22,9 @@ public class Devolucion implements Serializable {
     private String codigoTienda;
     private ArrayList<DetalleDevolucion> detalle;
 
+    public Devolucion() {
+    }
+
     /**
      *
      * @param id
@@ -38,6 +41,12 @@ public class Devolucion implements Serializable {
         this.total = total;
         this.usuarioTienda = usuarioTienda;
         this.codigoTienda = codigoTienda;
+    }
+
+    @Override
+    public String toString() {
+        return "Devolucion{" + "id=" + id + ", fecha=" + fecha + ", estado=" + estado + ", "
+                + "total=" + total + ", usuarioTienda=" + usuarioTienda + ", codigoTienda=" + codigoTienda + ", detalle=" + detalle.toString() + '}';
     }
 
     /**

@@ -4,7 +4,6 @@
     Author     : luis
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- para dar formato el texto-->
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -14,6 +13,7 @@
 <html lang="en">
     <head>
         <!-- Required meta tags -->
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <title>Reporte de pedidos</title>
@@ -66,7 +66,7 @@
                             <th scope="col">Fecha</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Total</th>
-                            <th scope="col">AcciÃ³n</th>
+                            <th scope="col">Acción</th>
                         </tr>
                     </thead>
                     <tbody>

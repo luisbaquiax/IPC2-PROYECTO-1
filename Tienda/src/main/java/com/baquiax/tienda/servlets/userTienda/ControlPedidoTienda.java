@@ -16,10 +16,10 @@ import com.baquiax.tienda.entidad.Pedido;
 import com.baquiax.tienda.entidad.Producto;
 import com.baquiax.tienda.entidad.Tienda;
 import com.baquiax.tienda.entidad.Usuario;
-import com.baquiax.tienda.entidad.UsuarioTienda;
 import com.baquiax.tienda.entidad.enumEntidad.EstadoEnvioEnum;
 import com.baquiax.tienda.entidad.enumEntidad.EstadoPedidoEnum;
 import com.baquiax.tienda.entidad.enumEntidad.TipoTiendaEnum;
+import com.baquiax.tienda.entidad.manejadores.ManejoProductos;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,8 +47,9 @@ public class ControlPedidoTienda extends HttpServlet {
     private List<Producto> productos;
     private List<Producto> productosAlPedido;
     private List<Envio> envios;
-    //atributes
+    //entidad
     private Usuario usuario;
+    private ManejoProductos manejoProductos;
 
     public ControlPedidoTienda() {
         //base
@@ -62,6 +63,7 @@ public class ControlPedidoTienda extends HttpServlet {
         this.productosAlPedido = new ArrayList<>();
         this.envios = new ArrayList<>();
         //atributes
+        this.manejoProductos = new ManejoProductos();
     }
 
     /**
@@ -139,10 +141,10 @@ public class ControlPedidoTienda extends HttpServlet {
             String[] codeName = request.getParameter("codigoProducto").split(",");
             String codigo = codeName[0];
             int cantidad = Integer.parseInt(request.getParameter("cantidadProducto"));
-            Producto productoAgregar = getProducto(codigo, productos);
+            Producto productoAgregar = this.manejoProductos.getProducto(codigo, productos);
             String msj = "";
             if (productoAgregar.getExistencia() >= cantidad) {
-                Producto p = getProducto(codigo, productosAlPedido);
+                Producto p = this.manejoProductos.getProducto(codigo, productosAlPedido);
                 if (p == null) {
                     productoAgregar.setExistencia(cantidad);
                     this.productosAlPedido.add(productoAgregar);
@@ -169,7 +171,7 @@ public class ControlPedidoTienda extends HttpServlet {
 
     private void quitarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String codigo = request.getParameter("codigo");
-        removerProducto(codigo, productosAlPedido);
+        this.manejoProductos.removerProducto(codigo, productosAlPedido);
         request.getSession().setAttribute("msj", "Producto quitado con éxito");
         mostrarMendu(request, response, request.getContextPath() + "/JSP/usuarioTienda/crearPedido.jsp");
     }
@@ -191,7 +193,7 @@ public class ControlPedidoTienda extends HttpServlet {
             if (tienda != null) {
                 Pedido pedido = new Pedido(
                         LocalDate.now().toString(),
-                        getTotalPedido(productosAlPedido),
+                        this.manejoProductos.getTotalPedido(productosAlPedido),
                         "",
                         usuario.getCodigo(),
                         tienda.getCodigo(),
@@ -227,32 +229,6 @@ public class ControlPedidoTienda extends HttpServlet {
 
         request.getSession().setAttribute("msj", msj);
         mostrarMendu(request, response, request.getContextPath() + "/JSP/usuarioTienda/crearPedido.jsp");
-    }
-
-    public Producto getProducto(String codigo, List<Producto> productos) {
-        for (Producto p : productos) {
-            if (p.getCodigo().equals(codigo)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    private void removerProducto(String codigo, List<Producto> productos) {
-        for (int i = 0; i < productos.size(); i++) {
-            if (productos.get(i).getCodigo().equals(codigo)) {
-                productos.remove(i);
-                break;
-            }
-        }
-    }
-
-    private double getTotalPedido(List<Producto> productos) {
-        double total = 0;
-        for (Producto producto : productos) {
-            total += producto.getCosto() * producto.getExistencia();
-        }
-        return total;
     }
 
     private ArrayList<DetallePedido> getDetallePedido(int idPedido, List<Producto> productos) {

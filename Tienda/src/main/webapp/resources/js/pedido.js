@@ -19,4 +19,18 @@ function openDetallePedido(context) {
         console.log(errorThrown);
     });
 }
-
+function openRechazarPedido(context) {
+    $.ajax({
+        type: 'GET',
+        url: context,
+        success: function (result) {
+            $('#modal-pedido-rechazado').html(result);
+            $('#modalRechazarPedido').modal('show');
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert("No se pudo realizar la acción. Lo sentimos.");
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(errorThrown);
+    });
+}

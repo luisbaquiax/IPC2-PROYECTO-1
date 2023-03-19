@@ -14,6 +14,7 @@
 <html lang="en">
     <head>
         <!-- Required meta tags -->
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <title>Listado de pedidos solicitados</title>
@@ -40,7 +41,7 @@
                     </div>
                     <form class="row g-3" method="POST" action="${pageContext.request.contextPath}/ControlBodegaEnvios?tarea=pedidosSolicitadosPorTienda">
                     <div class="col-auto">
-                        <label for="inputPassword2" class="">Estado:</label>
+                        <label for="inputPassword2" class="">Tiendas a cargo:</label>
                         <input class="form-control" name="tienda" list="datalistOptions" id="exampleDataList" placeholder="Elegir tienda..." required="">
                         <datalist id="datalistOptions">
                             <c:forEach items="${tiendasBodega}" var="store">
@@ -97,10 +98,11 @@
         </div>
         <!-- boostrap-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <!-- dataTables-->
+         <!-- dataTables-->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
-        <!-- js -->
+        <!-- dataTables arhivo-local -->
+        <script src="../../resources/js/dataTables.js" type="text/javascript"></script>
     </body>
 </html>
 <%

@@ -20,17 +20,34 @@ import java.util.List;
 public class ReportePedidosSupervisorDB {
 
     private PedidoDB pedidoDB;
-    private final static String REPORTE_PEDISO_BY_TIENDA_SUPERVISADA
+    /**
+     * Lista de pedidos pendientes de aprobación
+     */
+    private final static String PEDIDOS_PENDIENTES
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor\n"
             + "FROM pedido p\n"
             + "LEFT JOIN tienda t\n"
-            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = ? AND t.codigo = ?";
+            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = ? AND p.estado = ?";
+    /**
+     * Lista de pedidos pendientes de aborpación por tienda
+     */
+    private final static String PEDIDOS_PENDIENTES_BY_TIENDA
+            = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor\n"
+            + "FROM pedido p\n"
+            + "LEFT JOIN tienda t\n"
+            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = ? AND p.estado = ? AND t.codigo = ?";
+
+    private final static String REPORTE_PEDIDO_BY_TIENDA_SUPERVISADA
+            = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor\n"
+            + "FROM pedido p\n"
+            + "LEFT JOIN tienda t\n"
+            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = ? AND t.codigo = ? AND p.estado";
 
     private final static String REPORTE_BY_TIENDA_FECHA
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor\n"
             + "FROM pedido p\n"
             + "LEFT JOIN tienda t\n"
-            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = AND t.codigo = ? AND fecha BETWEEN ? AND ?";
+            + "ON p.codigo_tienda = t.codigo WHERE t.tipo = ? AND t.codigo = ? AND fecha BETWEEN ? AND ?";
 
     private final static String REPORTE_BY_FECHA
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor\n"
@@ -62,7 +79,7 @@ public class ReportePedidosSupervisorDB {
         this.pedidoDB = new PedidoDB();
     }
 
-    public ArrayList<Pedido> getPedidos(String tipoTienda) {
+    public ArrayList<Pedido> getReportePedidos(String tipoTienda) {
         List<Pedido> pedidos = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_PEDIDOS)) {
             statement.setString(1, tipoTienda);
@@ -78,15 +95,51 @@ public class ReportePedidosSupervisorDB {
         return (ArrayList<Pedido>) pedidos;
     }
 
+    public ArrayList<Pedido> getPedidosPendientes(String tipoTienda, String estado) {
+        List<Pedido> pedidos = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(PEDIDOS_PENDIENTES)) {
+            statement.setString(1, tipoTienda);
+            statement.setString(2, estado);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                pedidos.add(this.pedidoDB.getPedido(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Pedido>) pedidos;
+    }
+
+    public ArrayList<Pedido> getPedidosPendientes(String tipoTienda, String estado, String tienda) {
+        List<Pedido> pedidos = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(PEDIDOS_PENDIENTES_BY_TIENDA)) {
+            statement.setString(1, tipoTienda);
+            statement.setString(2, estado);
+            statement.setString(3, tienda);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                pedidos.add(this.pedidoDB.getPedido(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Pedido>) pedidos;
+    }
+
     /**
      * Lista los pedidos de una tienda supervisada
+     *
      * @param tipoTienda
      * @param codigoTienda
      * @return
      */
     public ArrayList<Pedido> getPedidos(String tipoTienda, String codigoTienda) {
         List<Pedido> pedidos = new ArrayList<>();
-        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_PEDISO_BY_TIENDA_SUPERVISADA)) {
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_PEDIDO_BY_TIENDA_SUPERVISADA)) {
             statement.setString(1, tipoTienda);
             statement.setString(2, codigoTienda);
             resultSet = statement.executeQuery();

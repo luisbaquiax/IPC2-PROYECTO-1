@@ -18,7 +18,7 @@ public class DetalleDevolucion implements Serializable {
     private double costoUnitario;
     private int cantidad;
     private String motivo;
-    private double sutotal;
+    private double subTotal;
 
     /**
      *
@@ -35,7 +35,7 @@ public class DetalleDevolucion implements Serializable {
         this.costoUnitario = costoUnitario;
         this.cantidad = cantidad;
         this.motivo = motivo;
-        this.sutotal = sutotal;
+        this.subTotal = sutotal;
     }
 
     /**
@@ -111,14 +111,14 @@ public class DetalleDevolucion implements Serializable {
     /**
      * @return the sutotal
      */
-    public double getSutotal() {
-        return sutotal;
+    public double getSubTotal() {
+        return subTotal;
     }
 
     /**
-     * @param sutotal the sutotal to set
+     * @param subTotal the sutotal to set
      */
-    public void setSutotal(double sutotal) {
-        this.sutotal = sutotal;
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
     }
 }

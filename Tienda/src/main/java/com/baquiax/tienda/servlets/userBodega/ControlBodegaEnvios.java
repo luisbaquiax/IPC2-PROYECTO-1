@@ -10,14 +10,18 @@ import com.baquiax.tienda.db.modelo.DetallePedidoDB;
 import com.baquiax.tienda.db.modelo.EnvioDB;
 import com.baquiax.tienda.db.modelo.PedidoDB;
 import com.baquiax.tienda.db.modelo.ProductoDB;
+import com.baquiax.tienda.db.modelo.TiendaDB;
 import com.baquiax.tienda.entidad.DetalleEnvio;
 import com.baquiax.tienda.entidad.DetallePedido;
 import com.baquiax.tienda.entidad.Envio;
 import com.baquiax.tienda.entidad.Pedido;
 import com.baquiax.tienda.entidad.Producto;
 import com.baquiax.tienda.entidad.Usuario;
+import com.baquiax.tienda.entidad.UsuarioBodega;
 import com.baquiax.tienda.entidad.enumEntidad.EstadoEnvioEnum;
 import com.baquiax.tienda.entidad.enumEntidad.EstadoPedidoEnum;
+import com.baquiax.tienda.entidad.manejadores.ManejoPedido;
+import com.baquiax.tienda.entidad.manejadores.ManejoProductos;
 import com.baquiax.tienda.servlets.userTienda.ControlPedidoTienda;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -42,6 +46,7 @@ public class ControlBodegaEnvios extends HttpServlet {
     private DetallePedidoDB detallePedidoDB;
     private DetalleEnvioDB detalleEnvioDB;
     private ProductoDB productoDB;
+    private TiendaDB tiendaDB;
     //servlet
     private ControlPedidoTienda controlPedidoTienda;
     //entidad
@@ -49,6 +54,8 @@ public class ControlBodegaEnvios extends HttpServlet {
     private List<Producto> listaProductos;
     private List<DetallePedido> listaDetallePedido;
     private Pedido pedido;
+    private ManejoProductos manejoProductos;
+    private ManejoPedido manejoPedido;
     //
     private String msjedicionPedidoSolicitado;
 
@@ -59,6 +66,7 @@ public class ControlBodegaEnvios extends HttpServlet {
         this.detalleEnvioDB = new DetalleEnvioDB();
         this.detallePedidoDB = new DetallePedidoDB();
         this.productoDB = new ProductoDB();
+        this.tiendaDB = new TiendaDB();
         //servlet
         this.controlPedidoTienda = new ControlPedidoTienda();
         //entidad
@@ -66,6 +74,8 @@ public class ControlBodegaEnvios extends HttpServlet {
         this.listaProductos = this.productoDB.getProductos();
         this.listaDetallePedido = new ArrayList<>();
         this.pedido = new Pedido();
+        this.manejoProductos = new ManejoProductos();
+        this.manejoPedido = new ManejoPedido();
         //
         msjedicionPedidoSolicitado = "";
     }
@@ -132,9 +142,12 @@ public class ControlBodegaEnvios extends HttpServlet {
 
     private void listarPedidosSolicitados(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
+        UsuarioBodega usuarioBodega = new UsuarioBodega();
+        usuarioBodega.setCodigo(usuario.getCodigo());
         this.listaPedidos = this.pedidoDB.getPedidosByUsuarioBodegaByEstado(usuario.getCodigo(), EstadoPedidoEnum.SOLICITADO.toString());
 
         request.getSession().setAttribute("pedidosSolicitados", this.listaPedidos);
+        request.getSession().setAttribute("tiendasBodega", this.tiendaDB.getTiendasByUsuarioBodega(usuarioBodega));
         response.sendRedirect(request.getContextPath() + "/JSP/bodega/pedidosSolicitados.jsp");
     }
 
@@ -151,7 +164,7 @@ public class ControlBodegaEnvios extends HttpServlet {
         int idPedido = Integer.parseInt(request.getParameter("id"));
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
         //se busca el pedido en la lista-pedidos
-        this.pedido = getPedido(idPedido, listaPedidos);
+        this.pedido = this.manejoPedido.getPedido(idPedido, listaPedidos);
         //se crea un envio
         Envio envio = new Envio(
                 LocalDate.now().toString(),
@@ -171,7 +184,7 @@ public class ControlBodegaEnvios extends HttpServlet {
         int idPedido = Integer.parseInt(request.getParameter("id"));
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
         //se busca el pedido en la lista-pedidos
-        this.pedido = getPedido(idPedido, listaPedidos);
+        this.pedido = this.manejoPedido.getPedido(idPedido, listaPedidos);
         //se crea un envio
         Envio envio = new Envio(
                 LocalDate.now().toString(),
@@ -235,7 +248,7 @@ public class ControlBodegaEnvios extends HttpServlet {
     private void modificarEnvio(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().removeAttribute("msjedicionPedidoSolicitado");
         int idPedido = Integer.parseInt(request.getParameter("id"));
-        this.pedido = getPedido(idPedido, listaPedidos);
+        this.pedido = this.manejoPedido.getPedido(idPedido, listaPedidos);
         this.listaDetallePedido = this.detallePedidoDB.getDetallePedidoByIdPedido(pedido);
 
         request.getSession().setAttribute("pedidoSolicitado", this.pedido);
@@ -249,8 +262,8 @@ public class ControlBodegaEnvios extends HttpServlet {
         String codigoProducto = datos[0];
         int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 
-        if (controlPedidoTienda.getProducto(codigoProducto, listaProductos) != null) {
-            if (controlPedidoTienda.getProducto(codigoProducto, listaProductos).getExistencia() >= cantidad) {
+        if (manejoProductos.getProducto(codigoProducto, listaProductos) != null) {
+            if (manejoProductos.getProducto(codigoProducto, listaProductos).getExistencia() >= cantidad) {
                 //agregamos el producto al detalle
                 for (DetallePedido d : this.listaDetallePedido) {
                     if (d.getCodigoProducto().equalsIgnoreCase(codigoProducto)) {
@@ -262,8 +275,8 @@ public class ControlBodegaEnvios extends HttpServlet {
                                         pedido.getId(),
                                         codigoProducto,
                                         cantidad,
-                                        controlPedidoTienda.getProducto(codigoProducto, this.listaProductos).getPrecio(),
-                                        cantidad * controlPedidoTienda.getProducto(codigoProducto, this.listaProductos).getPrecio()));
+                                        manejoProductos.getProducto(codigoProducto, this.listaProductos).getPrecio(),
+                                        cantidad * manejoProductos.getProducto(codigoProducto, this.listaProductos).getPrecio()));
                         break;
                     }
                 }
@@ -331,15 +344,6 @@ public class ControlBodegaEnvios extends HttpServlet {
         request.getSession().setAttribute("listaProductos", listaProductos);
         response.sendRedirect(request.getContextPath() + "/JSP/bodega/edicionPedidoSolicitado.jsp");
 
-    }
-
-    private Pedido getPedido(int id, List<Pedido> pedidos) {
-        for (Pedido pedido : pedidos) {
-            if (pedido.getId() == id) {
-                return pedido;
-            }
-        }
-        return null;
     }
 
     public DetallePedido getDetallePedido(List<DetallePedido> listaDetallePedidos, String codigoProducto) {

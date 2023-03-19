@@ -20,6 +20,9 @@ public class Tienda implements Serializable {
 
     private ArrayList<Producto> listaProductos;
 
+    public Tienda() {
+    }
+
     /**
      *
      * @param codigo
@@ -30,6 +33,11 @@ public class Tienda implements Serializable {
         this.codigo = codigo;
         this.direccion = direccion;
         this.tipo = tipo;
+    }
+
+    @Override
+    public String toString() {
+        return "Tienda{" + "codigo=" + codigo + ", direccion=" + direccion + ", tipo=" + tipo + ", listaProductos=" + listaProductos + '}';
     }
 
     /**

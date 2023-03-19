@@ -24,6 +24,17 @@ public class EnvioDB {
     private final static String UPDATE = "UPDATE envio SET fecha_salida = ?,fecha_llegada = ?, total = ?, estado = ? WHERE id = ?";
     private final static String SELECT_BY_TIENDA_BY_ESTADO = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ?";
 
+    /**
+     * Reporte de envios generados a un tienda por un usuario_bodega
+     */
+    private final static String SELECT_BY_TIENDA_BY_ESTADO_BY_BODEGA_FECHA
+            = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ? AND usuario_bodega = ? AND fecha_salida BETWEEN ? AND ?";
+    /**
+     * Reporte de envios generados por un usuario_bodega
+     */
+    private final static String SELECT_BY_ESTADO_BY_BODEGA
+            = "SELECT * FROM envio WHERE estado = ? AND usuario_bodega = ?";
+
     private final static String SELECT_BY_TIENDA_BY_ID = "SELECT * FROM envio WHERE codigo_tienda = ? AND id = ?";
     private final static String ULTIMO
             = "SELECT id FROM envio ORDER BY id DESC LIMIT 1";
@@ -111,6 +122,61 @@ public class EnvioDB {
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA_BY_ESTADO)) {
             statement.setString(1, codigoTienda);
             statement.setString(2, estado);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                envios.add(getEnvio(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return envios;
+    }
+
+    /**
+     * Lista los envios generados por un usuario_bodega a un tienda en espcífico
+     * en un intervalo de tiempo
+     *
+     * @param codigoTienda
+     * @param estado
+     * @param usuarioBodega
+     * @param fecha1
+     * @param fecha2
+     * @return
+     */
+    public List<Envio> getEnvios(String codigoTienda, String estado, String usuarioBodega, String fecha1, String fecha2) {
+        List<Envio> envios = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA_BY_ESTADO_BY_BODEGA_FECHA)) {
+            statement.setString(1, codigoTienda);
+            statement.setString(2, estado);
+            statement.setString(3, usuarioBodega);
+            statement.setString(4, fecha1);
+            statement.setString(5, fecha2);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                envios.add(getEnvio(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return envios;
+    }
+
+    /**
+     * Lista los envios generados por un usuario_bodega
+     *
+     * @param estado
+     * @param usuarioBodega
+     * @return
+     */
+    public List<Envio> getEnviosByUsuarioBodega(String estado, String usuarioBodega) {
+        List<Envio> envios = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_ESTADO_BY_BODEGA)) {
+            statement.setString(1, estado);
+            statement.setString(2, usuarioBodega);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 envios.add(getEnvio(resultSet));

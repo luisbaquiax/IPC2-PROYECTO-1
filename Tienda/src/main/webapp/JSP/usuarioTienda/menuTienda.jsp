@@ -18,6 +18,11 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="crearPedido.jsp">Crear pedido</a>
                 </li>
+                <c:if test="${tienda.tipo=='supervisada'}">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="crearPedido.jsp">Pedidos rechazados</a>
+                    </li>
+                </c:if>
                 <li class="nav-item">
                     <a class="nav-link" href="envios.jsp">Recibir envíos</a>
                 </li>

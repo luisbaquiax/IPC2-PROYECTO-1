@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.baquiax.tienda.entidad.enumEntidad;
+package com.baquiax.tienda.entidad.EstadosTipos;
 
 import com.baquiax.tienda.entidad.EstadosTipos.EstadoDevolucion;
+import com.baquiax.tienda.entidad.enumEntidad.EstadoDevolucionEnum;
 import java.util.ArrayList;
 import java.util.List;
 

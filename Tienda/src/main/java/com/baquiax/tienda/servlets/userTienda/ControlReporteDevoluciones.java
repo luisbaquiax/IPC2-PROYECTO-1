@@ -8,7 +8,7 @@ package com.baquiax.tienda.servlets.userTienda;
 import com.baquiax.tienda.db.modelo.DevolucionDB;
 import com.baquiax.tienda.entidad.Devolucion;
 import com.baquiax.tienda.entidad.Tienda;
-import com.baquiax.tienda.entidad.enumEntidad.ListaEstadoDevolucion;
+import com.baquiax.tienda.entidad.EstadosTipos.ListaEstadoDevolucion;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

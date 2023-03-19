@@ -31,9 +31,9 @@
                             <strong>Reportes</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=reporte1">Reporte de las 5 tiendas con más pedidos</a></li>
-                            <li><a class="dropdown-item" href="#">Usuarios de tienda</a></li>
-                            <li><a class="dropdown-item" href="#">Usuarios de bodega</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarTiendasMasPedidos">Reporte de las 5 tiendas con más pedidos</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarUsuarioMasEnvios">Reporte de los 5 usuarios con más envíos generados</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarUsuariosMasPedidos">Reporte de los 5 usuarios con más pedidos generados</a></li>
                         </ul>
                     </div>
                 </li>

@@ -37,6 +37,11 @@ public class Incidencia implements Serializable {
         this.codigoTienda = codigoTienda;
     }
 
+    @Override
+    public String toString() {
+        return "Incidencia{" + "id=" + id + ", fecha=" + fecha + ", estado=" + estado + ", usuarioTienda=" + usuarioTienda + ", codigoTienda=" + codigoTienda + ", detalle=" + detalle + '}';
+    }
+
     /**
      * @return the id
      */

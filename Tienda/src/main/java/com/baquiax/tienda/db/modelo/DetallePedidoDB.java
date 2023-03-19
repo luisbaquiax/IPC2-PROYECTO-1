@@ -90,7 +90,7 @@ public class DetallePedidoDB {
      * @param pedido
      * @return
      */
-    public ArrayList<DetallePedido> getDetallePedidoByIdPedido(Pedido pedido) {
+    public List<DetallePedido> getDetallePedidoByIdPedido(Pedido pedido) {
         List<DetallePedido> detalle = new ArrayList<>();
         try (PreparedStatement statemente = ConeccionDB.getConnection().prepareStatement(SELECT)) {
             statemente.setInt(1, pedido.getId());
@@ -103,7 +103,7 @@ public class DetallePedidoDB {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return (ArrayList<DetallePedido>) detalle;
+        return detalle;
     }
 
     private DetallePedido getDetalle(ResultSet resultSet) throws SQLException {

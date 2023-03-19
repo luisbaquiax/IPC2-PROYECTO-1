@@ -19,6 +19,9 @@ public class Producto implements Serializable {
     private double precio;
     private int existencia;
 
+    public Producto() {
+    }
+
     /**
      * Recuperar productos o insertar
      *
@@ -34,6 +37,11 @@ public class Producto implements Serializable {
         this.costo = costo;
         this.precio = precio;
         this.existencia = existencia;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "codigo=" + codigo + ", nombre=" + nombre + ", costo=" + costo + ", precio=" + precio + ", existencia=" + existencia + '}';
     }
 
     /**

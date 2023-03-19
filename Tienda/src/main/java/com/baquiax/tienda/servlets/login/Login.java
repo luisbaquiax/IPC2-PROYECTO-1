@@ -61,6 +61,7 @@ public class Login extends HttpServlet {
                 } else if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_TIENDA.getTipo())) {
                     UsuarioTienda useTienda = new UsuarioTienda();
                     useTienda.setCodigo(usuario.getCodigo());
+                    System.out.println(tiendaDB.getTiendaByUsuarioTienda(useTienda).toString());
                     request.getSession().setAttribute("tienda", this.tiendaDB.getTiendaByUsuarioTienda(useTienda));
                     response.sendRedirect(request.getContextPath() + "/ControlPedidoTienda?tarea=mostrarMenu");
                 } else if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_BODEGA.getTipo())) {
