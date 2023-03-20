@@ -26,6 +26,7 @@ import com.baquiax.tienda.servlets.userTienda.ControlPedidoTienda;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -145,7 +146,7 @@ public class ControlBodegaEnvios extends HttpServlet {
         UsuarioBodega usuarioBodega = new UsuarioBodega();
         usuarioBodega.setCodigo(usuario.getCodigo());
         this.listaPedidos = this.pedidoDB.getPedidosByUsuarioBodegaByEstado(usuario.getCodigo(), EstadoPedidoEnum.SOLICITADO.toString());
-
+        System.out.println(Arrays.toString(listaPedidos.toArray()));
         request.getSession().setAttribute("pedidosSolicitados", this.listaPedidos);
         request.getSession().setAttribute("tiendasBodega", this.tiendaDB.getTiendasByUsuarioBodega(usuarioBodega));
         response.sendRedirect(request.getContextPath() + "/JSP/bodega/pedidosSolicitados.jsp");

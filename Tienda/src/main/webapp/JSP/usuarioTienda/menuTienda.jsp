@@ -20,7 +20,7 @@
                 </li>
                 <c:if test="${tienda.tipo=='supervisada'}">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="crearPedido.jsp">Pedidos rechazados</a>
+                        <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/ControlReporteTienda?tarea=reporteProductos">Pedidos rechazados</a>
                     </li>
                 </c:if>
                 <li class="nav-item">

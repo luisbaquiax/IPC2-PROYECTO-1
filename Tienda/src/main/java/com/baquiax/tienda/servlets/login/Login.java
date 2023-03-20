@@ -50,23 +50,24 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("pass");
-
+        System.out.println(username);
+        System.out.println(password);
         Usuario usuario = this.usuarioDB.getUser(username, encriptador.encriptar(password));
         if (usuario != null) {
             System.out.println(usuario.toString());
             if (usuario.isEstado()) {
                 request.getSession().setAttribute("user", usuario);
-                if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_ADMIN.getTipo())) {
+                if (usuario.getTipo().equalsIgnoreCase(TipoUsuarioEnum.USUARIO_ADMIN.getTipo())) {
                     response.sendRedirect(request.getContextPath() + "/ControlAdministrador?tarea=mostrarMenu");
-                } else if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_TIENDA.getTipo())) {
+                } else if (usuario.getTipo().equalsIgnoreCase(TipoUsuarioEnum.USUARIO_TIENDA.getTipo())) {
                     UsuarioTienda useTienda = new UsuarioTienda();
                     useTienda.setCodigo(usuario.getCodigo());
                     System.out.println(tiendaDB.getTiendaByUsuarioTienda(useTienda).toString());
                     request.getSession().setAttribute("tienda", this.tiendaDB.getTiendaByUsuarioTienda(useTienda));
                     response.sendRedirect(request.getContextPath() + "/ControlPedidoTienda?tarea=mostrarMenu");
-                } else if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_BODEGA.getTipo())) {
+                } else if (usuario.getTipo().equalsIgnoreCase(TipoUsuarioEnum.USUARIO_BODEGA.getTipo())) {
                     response.sendRedirect(request.getContextPath() + "/ControlBodegaEnvios?tarea=listarPedidosSolicitados");
-                } else if (usuario.getTipo().equals(TipoUsuarioEnum.USUARIO_SUPERVISOR.getTipo())) {
+                } else if (usuario.getTipo().equalsIgnoreCase(TipoUsuarioEnum.USUARIO_SUPERVISOR.getTipo())) {
                     response.sendRedirect(request.getContextPath() + "/ControlReportePedidosSupervisor?tarea=listarPedidos");
                 }
             } else {
@@ -76,7 +77,7 @@ public class Login extends HttpServlet {
             }
 
         } else {
-            request.getSession().setAttribute("msj", "Código o contraseña incorrecta.");
+            request.getSession().setAttribute("msj", "Nombre de usuario o contraseña incorrecta.");
             response.sendRedirect("login.jsp");
         }
 

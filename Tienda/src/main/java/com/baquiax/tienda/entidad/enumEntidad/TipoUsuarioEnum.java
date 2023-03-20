@@ -25,16 +25,16 @@ public enum TipoUsuarioEnum {
         // restornamos la cadena según el tipo de usuario
         switch (this) {
             case USUARIO_TIENDA:
-                return "usuariostienda";
+                return "USUARIOSTIENDA";
 
             case USUARIO_ADMIN:
-                return "admins";
+                return "ADMINS";
 
             case USUARIO_BODEGA:
-                return "encargadosBodega";
+                return "ENCARGADOSBODEGA";
 
             case USUARIO_SUPERVISOR:
-                return "supervisores";
+                return "SUPERVISORES";
 
             default:
                 return null;

@@ -106,6 +106,7 @@ public class NewMain {
             /**
              *
              */
+            System.out.println(encriptador.desencriptar("6Hh5snWZEXyesrVdXdntdQ=="));
             String[] contra = new String[]{"admin1", "userTienda1", "userBodega1", "userSupervisor1", "userTienda2"};
 //            for (String c : contra) {
 //                System.out.println(encriptador.encriptar(c));

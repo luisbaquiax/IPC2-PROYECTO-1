@@ -108,6 +108,7 @@ public class CargaDatos {
     private void subirUsuarios(List<Usuario> usuarios, List<UsuarioBodega> bodegueros, List<UsuarioTienda> usuariosTienda) {
         for (Usuario usuario : usuarios) {
             usuario.setPassword(encriptador.encriptar(usuario.getPassword()));
+            System.out.println("contraseña encriptada: " + usuario.getPassword());
             if (this.usuarioDB.insert(usuario)) {
                 if (usuario.getTipo().equalsIgnoreCase(TipoUsuarioEnum.USUARIO_ADMIN.getTipo())) {
                     UsuarioAdministrador admin = new UsuarioAdministrador();
@@ -164,7 +165,7 @@ public class CargaDatos {
 
     private void subirIncidencias(List<Incidencia> incidencias) {
         for (Incidencia incidencia : incidencias) {
-            if (this.incidenciaDB.insertFromFile(incidencia)) {
+            if (incidenciaDB.insertFromFile(incidencia)) {
                 for (DetalleIncidencia dIncidencia : incidencia.getDetalle()) {
                     this.detalleIncidenciaDB.insert(dIncidencia);
                 }
@@ -174,7 +175,7 @@ public class CargaDatos {
 
     private void subirDevoluciones(List<Devolucion> devolucions) {
         for (Devolucion devolucion : devolucions) {
-            if (this.devolucionDB.insetFromFile(devolucion)) {
+            if (devolucionDB.insetFromFile(devolucion)) {
                 for (DetalleDevolucion dDevolucion : devolucion.getDetalle()) {
                     this.detalleDevolucionDB.inset(dDevolucion);
                 }

@@ -39,7 +39,7 @@
                     </div>
                     <form class="row g-3" method="POST" action="${pageContext.request.contextPath}/ControlReportePedidosSupervisor?tarea=listaPedidoTienda">
                     <div class="col-auto">
-                        <label for="inputPassword2" class="">Estado:</label>
+                        <label for="inputPassword2" class="">Tienda:</label>
                         <input class="form-control" name="tienda" list="datalistOptions" id="exampleDataList" placeholder="Elegir tienda..." required="">
                         <datalist id="datalistOptions">
                             <c:forEach items="${stores}" var="store">

@@ -50,26 +50,25 @@ public class ControlAdministrador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/Login");
-        } else {
-            String tarea = request.getParameter("tarea");
-            if (request.getSession().getAttribute("msj") != null) {
-                request.getSession().removeAttribute("msj");
-            }
-            switch (tarea) {
-                case "mostrarMenu":
-                    mostrarMenus(request, response, request.getContextPath() + "/JSP/administrador/usuariosTienda.jsp");
-                    break;
-                case "activarDesactivar":
-                    activarDesactivar(request, response);
-                    break;
-            }
+//        if (request.getSession().getAttribute("user") == null) {
+//            response.sendRedirect(request.getContextPath() + "/Login");
+//        } else {
+        String tarea = request.getParameter("tarea");
+        request.getSession().removeAttribute("msj");
+        switch (tarea) {
+            case "mostrarMenu":
+                mostrarMenus(request, response, request.getContextPath() + "/JSP/administrador/usuariosTienda.jsp");
+                break;
+            case "activarDesactivar":
+                activarDesactivar(request, response);
+                break;
         }
+//        }
 
     }
 
     public void mostrarMenus(HttpServletRequest request, HttpServletResponse response, String ruta) throws IOException {
+        System.out.println("hola mostrar menu");
         request.getSession().setAttribute("tiendas", this.tiendaDB.getTienda());
         request.getSession().setAttribute("usuariosTienda", this.usuarioTiendaDB.getUsers());
         request.getSession().setAttribute("usuariosBodega", this.usuarioDB.getUsers(TipoUsuarioEnum.USUARIO_BODEGA.getTipo()));

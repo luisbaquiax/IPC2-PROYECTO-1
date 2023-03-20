@@ -20,7 +20,7 @@ import java.util.List;
 public class DevolucionDB {
 
     private final static String INSERT = "INSERT INTO devolucion(fecha,estado,total,usuario_tienda,codigo_tienda,id_envio) VALUES(?,?,?,?,?,?)";
-    private final static String INSERT_FROM_FILE = "INSERT INTO devolucion(id,fecha,estado,total,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?,?,?)";
+    private final static String INSERT_FROM_FILE = "INSERT INTO devolucion(id,fecha,estado,total,usuario_tienda,codigo_tienda,id_envio) VALUES(?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE devolucion SET fecha = ?, estado = ? WHERE id = ?";
     /**
      * Lista las devoluciones por usuario_bodega por estado
