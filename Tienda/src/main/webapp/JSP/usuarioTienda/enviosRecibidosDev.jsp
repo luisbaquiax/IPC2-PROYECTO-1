@@ -1,9 +1,10 @@
 <%-- 
-    Document   : envios
-    Created on : 2/03/2023, 23:30:52
+    Document   : enviosRecibidosDev
+    Created on : 21/03/2023, 01:12:36
     Author     : luis
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- para dar formato el texto-->
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- SELECCIONAMOS LA LOCALIDAD -->
@@ -15,7 +16,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <title>Envíos</title>
+        <title>Envíos recibidos</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/navbar-fixed/">
         <!-- Bootstrap core CSS -->
@@ -30,21 +31,21 @@
     </head>
     <body>
         <jsp:include page="menuTienda.jsp"></jsp:include>
-            <div class="container mt-5">
+            <div class="container mt-4">
                 <div class="card-header">
                     <br>
                     <div class="text-center">
-                        <h1>Listado de envíos</h1>
+                        <h1>Envíos recibidos</h1>
+                        <hr>
                     </div>
                     <div class="row">
                         <div class="col col-md-6">
-                            <a href="${pageContext.request.contextPath}/ControlEnviosTienda?tarea=verTodos"
+                            <a href="${pageContext.request.contextPath}/ControlDevolciones?tarea=listarEnviosRecibidos"
                            class="btn btn-primary btn-block w-25" ><i class="fas fa-list-ol"></i> Ver todos</a>
                     </div>
                 </div>
-                <form method="POST" action="${pageContext.request.contextPath}/ControlEnviosTienda?tarea=buscarEnvio">
+                <form method="POST" action="${pageContext.request.contextPath}/ControlDevolciones?tarea=listarEnviosPorID">
                     <div class="row g-3 mt-1">
-                        <h3 class="text-success">${msj}</h3>
                         <div class="col">
                             <label for="exampleDataList" class="form-label">Buscar por ID:</label>
                             <input name="idEnvio" required="" type="number"
@@ -58,51 +59,38 @@
                 </form>
             </div>
             <div class="card-body">
+                <c:if test="${msje!=null}">
+                    <h3 class="text-danger">${msje}</h3>
+                </c:if>
                 <table id="storeTable" class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Pedido</th>
                             <th scope="col">Fecha salida</th>
+                            <th scope="col">Fecha recibido</th>
                             <th scope="col">Total</th>
                             <th scope="col">Estado</th>
-                            <th scope="col">Detalle</th>
-                            <th scope="col">Marcar</th>
+                            <th scope="col">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${envios}" var="p">
+                        <c:forEach items="${listaEnviosRecibidos}" var="p">
                             <tr>
                                 <th>${p.id}</th>
+                                <th>${p.idPedido}</th>
                                 <th>${p.fechaSalida}</th>
+                                <th>${p.fechaLlegada}</th>
                                 <td><fmt:formatNumber value="${p.total}" type="currency"/></td>
                                 <td>${p.estado}</td>
                                 <td>
-                                    <a href="#"
-                                       onclick="openDetalleEnvio('${pageContext.request.contextPath}/ControlEnviosTienda?tarea=openDetalleEnvio&id=${p.id}')"
-                                       class="btn btn-warning btn-block" ><i class="fa-solid fa-angles-down"></i> Mostrar detalle</a>
-                                </td>
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/ControlEnviosTienda?tarea=marcarEnvio&id=${p.id}" 
-                                       class="btn btn-primary btn-block" ><i class="fas fa-check"></i>Como recibido</a>
+                                    <a href="${pageContext.request.contextPath}/ControlDevolciones?tarea=generarEevolucion&id=${p.id}"
+                                       class="btn btn-warning btn-block" ><i class="fa-solid fa-angles-right"></i> Generar devolución</a>
                                 </td>
                             </tr>
                         </c:forEach>
+                    <tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- para llamar al modal -->
-        <div class="modal fade" id="modalDetalleEnvio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning">
-                        <h5 class="modal-title" id="exampleModalLabel">Detalle del envío</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="modal-detalle-envio">
-
-                    </div>
-                </div>
             </div>
         </div>
         <!-- boostrap-->
@@ -113,7 +101,6 @@
         <!-- dataTables arhivo-local -->
         <script src="../../resources/js/dataTables.js" type="text/javascript"></script>
         <!-- js -->
-        <script src="../../resources/js/envio.js" type="text/javascript"></script>
     </body>
 </html>
 <%

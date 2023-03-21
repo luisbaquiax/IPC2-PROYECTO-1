@@ -1,6 +1,6 @@
 <%-- 
-    Document   : crearPedido
-    Created on : 1/03/2023, 01:27:58
+    Document   : editarPedido
+    Created on : 19/03/2023, 21:46:27
     Author     : luis
 --%>
 
@@ -16,7 +16,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <title>Usuario de tienda</title>
+        <title>Pedidos rechazados</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/navbar-fixed/">
         <!-- Bootstrap core CSS -->
@@ -33,21 +33,22 @@
                 <div class="card-header">
                     <br>
                     <div class="text-center">
-                        <h1>Crear pedido</h1>
+                        <h1>Edición de pedidos</h1>
                     </div>
                     <div class="row text-center">
-                        <div class="col col-md-6">
-                            <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=reiniciar"
-                           class="btn btn-warning btn-block w-50" ><i class="fa-solid fa-rotate-right"></i> Reinicar pedido</a>
-                    </div>
-                    <div class="col col-md-6">
-                        <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=realizar"
-                           class="btn btn-info btn-block w-50" ><i class="fa-solid fa-check"></i> Realizar pedido</a>
+                        <div class="col-auto">
+                            <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=guardarCambios"
+                           class="btn btn-primary btn-block" ><i class="fa-solid fa-floppy-disk-circle-arrow-right"></i> Guardar cambios</a>
                     </div>
                 </div>
                 <hr>
-                <h3 class="text-success">${msj}</h3> 
-                <form method="POST" action="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=agregarProducto">
+                <c:if test="${msjDetallePedidoRechazado!=null}">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        ${msjDetallePedidoRechazado}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+                <form method="POST" action="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=agregarProductoPedidoRechazado">
                     <div class="row g-3 mt-1">
                         <div class="col">
                             <label for="exampleDataList" class="form-label">Productos</label>
@@ -74,26 +75,31 @@
                 <table id="storeTable" class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">Pedido</th>
                             <th scope="col">Producto</th>
-                            <th scope="col">Costo Unitario</th>
                             <th scope="col">Cantidad</th>
-                            <th></th>
+                            <th scope="col">Precio unitario</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${productosP}" var="p" varStatus="contador">
+                        <c:forEach items="${productosPedido}" var="d">
                             <tr>
-                                <th>${contador.count}</th>
-                                <th>${p.codigo}</th>
-                                <td><fmt:formatNumber value="${p.costo}" type="currency"/></td>
-                                <td>${p.existencia}</td>
+                                <th>${d.idPedido}</th>
+                                <th>${d.codigoProducto}</th>
+                                <th>${d.cantidad}</th>
+                                <td><fmt:formatNumber value="${d.precioUnitario}" type="currency"/></td>
+                                <td><fmt:formatNumber value="${d.subtotal}" type="currency"/></td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=quitarProducto&codigo=${p.codigo}" 
-                                       class="btn btn-danger btn-block w-100" ><i class="fas fa-trash-alt"></i> Quitar</a>
+                                    <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=editarDetallePedido&id=${d.idPedido}" 
+                                       class="btn btn-warning btn-block" ><i class="fa-solid fa-angles-down"></i> Editar</a>
+                                    <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=quitarDetallePedido&id=${d.idPedido}&codigo=${d.codigoProducto}" 
+                                       class="btn btn-danger btn-block" ><i class="fas fa-trash-alt"></i> Quitar</a>
                                 </td>
                             </tr>
                         </c:forEach>
+                    </tbody>
                 </table>
             </div>
         </div>

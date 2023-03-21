@@ -22,6 +22,9 @@ public class EnvioDB {
     private final static String INSERT = "INSERT INTO envio(fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega,id_pedido) VALUES(?,?,?,?,?,?,?)";
     private final static String INSERT_FROM_FILE = "INSERT INTO envio(id,fecha_salida,fecha_llegada,total,estado,codigo_tienda,usuario_bodega,id_pedido) VALUES(?,?,?,?,?,?,?,?)";
     private final static String UPDATE = "UPDATE envio SET fecha_salida = ?,fecha_llegada = ?, total = ?, estado = ? WHERE id = ?";
+    /**
+     * Lista los envios que llegarán a un tienda en específico, y por estado
+     */
     private final static String SELECT_BY_TIENDA_BY_ESTADO = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ?";
 
     /**
@@ -35,7 +38,7 @@ public class EnvioDB {
     private final static String SELECT_BY_ESTADO_BY_BODEGA
             = "SELECT * FROM envio WHERE estado = ? AND usuario_bodega = ?";
 
-    private final static String SELECT_BY_TIENDA_BY_ID = "SELECT * FROM envio WHERE codigo_tienda = ? AND id = ?";
+    private final static String SELECT_BY_TIENDA_BY_ID = "SELECT * FROM envio WHERE codigo_tienda = ? AND id = ? WHERE estado = ?";
     private final static String ULTIMO
             = "SELECT id FROM envio ORDER BY id DESC LIMIT 1";
 
@@ -192,17 +195,34 @@ public class EnvioDB {
     }
 
     /**
-     * Servirá para encontrar un envio mediante su id
+     * Servirá para encontrar un envio mediante su id, por estado
      *
      * @param codigoTienda
      * @param idEnvio
+     * @param estado
      * @return
      */
-    public List<Envio> getEnvios(String codigoTienda, int idEnvio) {
+    public List<Envio> getEnvios(String codigoTienda, int idEnvio, String estado) {
         List<Envio> envios = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA_BY_ID)) {
             statement.setString(1, codigoTienda);
             statement.setInt(2, idEnvio);
+            statement.setString(3, estado);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                envios.add(getEnvio(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return envios;
+    }
+
+    public List<Envio> getEnvios() {
+        List<Envio> envios = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement("")) {
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 envios.add(getEnvio(resultSet));

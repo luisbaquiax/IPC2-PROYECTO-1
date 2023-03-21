@@ -62,6 +62,12 @@ public class IncidenciaDB {
 
     private final static String INCIDENCIAS_BY_TIENDA = "SELECT * FROM incidencia WHERE codigo_tienda = ?";
 
+    /**
+     * obtiene el id de la última incidencia ingresada
+     */
+    public final static String ULTIMO
+            = "SELECT id FROM incidencia ORDER BY id DESC LIMIT 1";
+
     private ResultSet resultSet;
 
     public IncidenciaDB() {
@@ -282,6 +288,25 @@ public class IncidenciaDB {
             System.out.println(e.getMessage());
         }
         return (ArrayList<Incidencia>) incidencias;
+    }
+
+    /**
+     *
+     * @return El id de la última incidencia ingresada
+     */
+    public int getUltimoID(String quey) {
+        int u = 0;
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(quey)) {
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                u = resultSet.getInt("id");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return u;
     }
 
     private Incidencia getIncidencia(ResultSet resultSet) throws SQLException {

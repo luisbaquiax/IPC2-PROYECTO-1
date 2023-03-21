@@ -16,7 +16,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <title>Usuario de tienda</title>
+        <title>Pedidos rechazados</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/navbar-fixed/">
         <!-- Bootstrap core CSS -->
@@ -33,67 +33,40 @@
                 <div class="card-header">
                     <br>
                     <div class="text-center">
-                        <h1>Crear pedido</h1>
-                    </div>
-                    <div class="row text-center">
-                        <div class="col col-md-6">
-                            <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=reiniciar"
-                           class="btn btn-warning btn-block w-50" ><i class="fa-solid fa-rotate-right"></i> Reinicar pedido</a>
-                    </div>
-                    <div class="col col-md-6">
-                        <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=reealizar"
-                           class="btn btn-info btn-block w-50" ><i class="fa-solid fa-check"></i> Realizar pedido</a>
+                        <h1>Pedidos rechazados</h1>
                     </div>
                 </div>
-                <hr>
-                <h3 class="text-success">${msj}</h3> 
-                <form method="POST" action="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=agregarProducto">
-                    <div class="row g-3 mt-1">
-                        <div class="col">
-                            <label for="exampleDataList" class="form-label">Productos</label>
-                            <input name="codigoProducto" required="" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Búsque el producto...">
-                            <datalist id="datalistOptions">
-                                <c:forEach items="${productos}" var="producto">
-                                    <option value="${producto.codigo},${producto.nombre}"/>
-                                </c:forEach>
-                            </datalist>
-                        </div>
-                        <div class="col">
-                            <label for="exampleDataList" class="form-label">Cantidad:</label>
-                            <input name="cantidadProducto" required="" type="number"
-                                   class="form-control" placeholder="Username" value="1" min="1" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="col">
-                            <br>
-                            <button class="btn btn-primary btn-block mt-2 w-100" type="submit"><i class="fas fa-plus"></i> Agregar Producto</button>
-                        </div>
+                <div class="card-body">
+                <c:if test="${msjPedidoRechazo!=null}">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        ${msjPedidoRechazo}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </form>
-            </div>
-            <div class="card-body">
+                </c:if>
                 <table id="storeTable" class="table table-striped">
-                    <thead class="thead-dark">
+                    <thead class="thead-dark table-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Producto</th>
-                            <th scope="col">Costo Unitario</th>
-                            <th scope="col">Cantidad</th>
-                            <th></th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Editar o ver detalle</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${productosP}" var="p" varStatus="contador">
+                        <c:forEach items="${pedidosRechazados}" var="p">
                             <tr>
-                                <th>${contador.count}</th>
-                                <th>${p.codigo}</th>
-                                <td><fmt:formatNumber value="${p.costo}" type="currency"/></td>
-                                <td>${p.existencia}</td>
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=quitarProducto&codigo=${p.codigo}" 
-                                       class="btn btn-danger btn-block w-100" ><i class="fas fa-trash-alt"></i> Quitar</a>
+                                <td>${p.id}</td>
+                                <td>${p.fecha}</td>
+                                <td>${p.estado}</td>
+                                <td><fmt:formatNumber value="${p.total}" type="currency"></fmt:formatNumber></td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=editarPedido&id=${p.id}"
+                                       class="btn btn-warning btn-block" ><i class="fa-solid fa-angles-down"></i> Editar / detalle</a>
                                 </td>
                             </tr>
                         </c:forEach>
+                    </tbody>
                 </table>
             </div>
         </div>

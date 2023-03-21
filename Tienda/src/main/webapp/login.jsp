@@ -23,7 +23,7 @@
             <form method="POST" action="Login">
                 <img class="mb-4" src="resources/img/store.png" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 fw-normal">Iniciar sesión</h1>
-                <h3 class="text-warning">${msj}</h3>
+                <h4 class="text-warning">${msj}</h4>
                 <div class="form-floating">
                     <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Nombre de usuario">
                     <label for="floatingInput">Nombre de usuario</label>

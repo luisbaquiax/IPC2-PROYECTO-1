@@ -72,6 +72,12 @@ public class DevolucionDB {
             + "LEFT JOIN bodega_tienda b \n"
             + "ON d.codigo_tienda = b.codigo_tienda "
             + "WHERE b.codigo_usuario_bodega = ? ";
+    
+    /**
+     * obtiene el id de la última incidencia ingresada
+     */
+    public final static String ULTIMO
+            = "SELECT id FROM devolucion ORDER BY id DESC LIMIT 1";
 
     private ResultSet resultSet;
 
@@ -95,6 +101,7 @@ public class DevolucionDB {
             statement.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             return false;
         }

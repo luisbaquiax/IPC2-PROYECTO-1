@@ -6,11 +6,13 @@
 package com.baquiax.tienda.db.coneccion;
 
 import com.baquiax.tienda.db.modelo.PedidoDB;
+import com.baquiax.tienda.db.modelo.ProductoDB;
 import com.baquiax.tienda.db.modelo.UsuarioAdministradorDB;
 import com.baquiax.tienda.db.modelo.UsuarioDB;
 import com.baquiax.tienda.db.modelo.reporteAdministracion.ReporteAdministracionDB;
 import com.baquiax.tienda.db.modelo.reporteSupervisor.ReportePedidosSupervisorDB;
 import com.baquiax.tienda.entidad.Pedido;
+import com.baquiax.tienda.entidad.Producto;
 import com.baquiax.tienda.entidad.Usuario;
 import com.baquiax.tienda.entidad.UsuarioAdministrador;
 import com.baquiax.tienda.entidad.encripta.Encriptador;
@@ -117,6 +119,11 @@ public class NewMain {
 //            UsuarioAdministrador admin = new UsuarioAdministrador();
 //            admin.setCodigo(u.getCodigo());
 //            usuarioAdministradorDB.insert(admin);
+            ProductoDB productoDB = new ProductoDB();
+            for (Producto  p : productoDB.getProductos()) {
+                System.out.println(p.toString());
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

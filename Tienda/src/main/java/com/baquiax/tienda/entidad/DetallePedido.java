@@ -19,6 +19,9 @@ public class DetallePedido implements Serializable {
     private double precioUnitario;
     private double subtotal;
 
+    public DetallePedido() {
+    }
+
     /**
      *
      * @param idPedido

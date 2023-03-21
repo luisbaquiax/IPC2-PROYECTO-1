@@ -1,6 +1,6 @@
 <%-- 
-    Document   : modalDetalleDevolucion
-    Created on : 13/03/2023, 23:41:49
+    Document   : modalDetalleEnvio
+    Created on : 20/03/2023, 02:12:56
     Author     : luis
 --%>
 
@@ -14,8 +14,7 @@
         <table id="storeTable" class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">ID-devolución</th>
-                    <th scope="col">Motivo</th>
+                    <th scope="col">Envío</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Precio unitario</th>
@@ -23,14 +22,13 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${productosDevolucion}" var="productosDev">
+                <c:forEach items="${detalleDelEnvio}" var="productosEnvio">
                     <tr>
-                        <td>${productosDev.idDevolucion}</td>
-                        <td>${productosDev.motivo}</td>
-                        <td>${productosDev.codigoProducto}</td>
-                        <td>${productosDev.cantidad}</td>
-                        <td><fmt:formatNumber value="${productosDev.costoUnitario}" type="currency"></fmt:formatNumber></td>
-                        <td><fmt:formatNumber value="${productosDev.subTotal}" type="currency"></fmt:formatNumber></td>
+                        <td>${productosEnvio.idEnvio}</td>
+                        <td>${productosEnvio.codigoProducto}</td>
+                        <td>${productosEnvio.cantidad}</td>
+                        <td><fmt:formatNumber value="${productosEnvio.precioUnitario}" type="currency"></fmt:formatNumber></td>
+                        <td><fmt:formatNumber value="${productosEnvio.subtotal}" type="currency"></fmt:formatNumber></td>
                         </tr>
                 </c:forEach>
         </table>

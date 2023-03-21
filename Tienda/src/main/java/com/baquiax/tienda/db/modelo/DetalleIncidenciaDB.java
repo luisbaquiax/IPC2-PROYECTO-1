@@ -41,6 +41,7 @@ public class DetalleIncidenciaDB {
             statement.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

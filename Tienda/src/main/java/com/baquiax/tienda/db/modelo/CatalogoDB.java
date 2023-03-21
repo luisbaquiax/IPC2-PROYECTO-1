@@ -8,6 +8,8 @@ package com.baquiax.tienda.db.modelo;
 import com.baquiax.tienda.db.coneccion.ConeccionDB;
 import com.baquiax.tienda.entidad.Catalogo;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,6 +19,9 @@ public class CatalogoDB {
 
     private final static String INSERT = "INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES(?,?,?)";
     private final static String UPDATE = "UPDATE catalogo SET existencia = ? WHERE codigo_tienda = ? AND codigo_producto = ?";
+    private final static String SELECT_BY_TIENDA = "SELECT * FROM catalogo WHERE codigo_tienda = ?";
+
+    private ResultSet resultSet;
 
     public CatalogoDB() {
     }
@@ -37,9 +42,36 @@ public class CatalogoDB {
             statemnt.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Lista el catalogo por tienda
+     *
+     * @param codigoTienda
+     * @return
+     */
+    public List<Catalogo> getCatalog(String codigoTienda) {
+        List<Catalogo> catalogos = new ArrayList<>();
+        try (PreparedStatement statemment = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA)) {
+            statemment.setString(1, codigoTienda);
+            resultSet = statemment.executeQuery();
+            while (resultSet.next()) {
+                catalogos.add(
+                        new Catalogo(
+                                resultSet.getString("codigo_tienda"),
+                                resultSet.getString("codigo_producto"),
+                                resultSet.getInt("existencia")));
+            }
+            resultSet.close();
+            statemment.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return catalogos;
     }
 
     /**
@@ -58,6 +90,7 @@ public class CatalogoDB {
             statemnt.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             return false;
         }

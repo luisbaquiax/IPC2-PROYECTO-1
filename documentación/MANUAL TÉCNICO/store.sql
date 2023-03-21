@@ -147,13 +147,13 @@ CREATE TABLE IF NOT EXISTS detalle_incidencia(
     codigo_producto VARCHAR(20) NOT NULL,
     cantidad INT NOT NULL,
     motivo VARCHAR(45) NOT NULL,
-    PRIMARY KEY(id_incidencia, codigo_producto),
+    PRIMARY KEY(id_incidencia, codigo_producto, motivo),
     FOREIGN KEY(id_incidencia) REFERENCES incidencia(id) ON UPDATE CASCADE,
     FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS devolucion(
-    id INT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
     fecha DATE NOT NULL,
     estado VARCHAR(45) NOT NULL,
     total DOUBLE NOT NULL,
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS detalle_devolucion(
     costo_unitario DOUBLE NOT NULL,
     cantidad INT NOT NULL,
     motivo VARCHAR(45) NOT NULL,
-    PRIMARY KEY(id_devolucion, codigo_producto),
+    PRIMARY KEY(id_devolucion, codigo_producto, motivo),
     FOREIGN KEY(id_devolucion) REFERENCES devolucion(id) ON UPDATE CASCADE,
     FOREIGN KEY(codigo_producto) REFERENCES producto(codigo) ON UPDATE CASCADE
 );

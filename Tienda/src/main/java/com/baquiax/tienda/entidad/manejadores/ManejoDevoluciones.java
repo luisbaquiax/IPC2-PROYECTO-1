@@ -5,6 +5,7 @@
  */
 package com.baquiax.tienda.entidad.manejadores;
 
+import com.baquiax.tienda.entidad.DetalleDevolucion;
 import com.baquiax.tienda.entidad.Devolucion;
 import java.util.List;
 
@@ -24,5 +25,23 @@ public class ManejoDevoluciones {
             }
         }
         return null;
+    }
+
+    public DetalleDevolucion getDetalleDevolucion(String codigoProducto, String motivo, List<DetalleDevolucion> devolucionDetalles) {
+        for (DetalleDevolucion detalleDevolucion : devolucionDetalles) {
+            if (detalleDevolucion.getCodigoProducto().equals(codigoProducto)
+                    && (detalleDevolucion.getMotivo().equals(motivo))) {
+                return detalleDevolucion;
+            }
+        }
+        return null;
+    }
+
+    public double getTotal(List<DetalleDevolucion> devolucionDetalles) {
+        int total = 0;
+        for (DetalleDevolucion devolucionDetalle : devolucionDetalles) {
+            total += devolucionDetalle.getCantidad() * devolucionDetalle.getCostoUnitario();
+        }
+        return total;
     }
 }

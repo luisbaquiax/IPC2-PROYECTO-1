@@ -19,8 +19,8 @@ import java.util.List;
 public class DetallePedidoDB {
 
     private final static String INSERT = "INSERT INTO detalle_pedido(id_pedido,codigo_producto,cantidad,precio_unitario) VALUES(?,?,?,?)";
-    private final static String UPDATE = "UPDATE detalle_pedido SET cantidad = ? WHERE id_pedido = ? ADN codigo_producto = ?";
-    private final static String DELETE = "DELETE FROM detalle_pedido WHERE id_pedido = ? ADN codigo_producto = ?";
+    private final static String UPDATE = "UPDATE detalle_pedido SET cantidad = ? WHERE id_pedido = ? AND codigo_producto = ?";
+    private final static String DELETE = "DELETE FROM detalle_pedido WHERE id_pedido = ? AND codigo_producto = ?";
     private final static String SELECT = "SELECT * FROM detalle_pedido WHERE id_pedido = ?";
 
     private ResultSet resultSet;

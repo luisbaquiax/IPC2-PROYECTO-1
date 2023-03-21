@@ -13,6 +13,7 @@ import com.baquiax.tienda.entidad.DetallePedido;
 import com.baquiax.tienda.entidad.Pedido;
 import com.baquiax.tienda.entidad.enumEntidad.EstadoPedidoEnum;
 import com.baquiax.tienda.entidad.enumEntidad.TipoTiendaEnum;
+import com.baquiax.tienda.entidad.manejadores.ManejoPedido;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class ControlReportePedidosSupervisor extends HttpServlet {
     //entidad
     private List<Pedido> listaPedidos;
     private List<DetallePedido> detallePedido;
+    private ManejoPedido manejoPedido;
 
     public ControlReportePedidosSupervisor() {
         //base
@@ -48,8 +50,9 @@ public class ControlReportePedidosSupervisor extends HttpServlet {
         this.pedidoDB = new PedidoDB();
         //servlet
         //entidad
-        this.listaPedidos = new ArrayList<>();
+        this.listaPedidos = this.listaPedidos = this.reportePedidosSupervisorDB.getPedidosPendientes(TipoTiendaEnum.SUPERVISADA.getTipo(), EstadoPedidoEnum.PENDIENTE.toString());
         this.detallePedido = new ArrayList<>();
+        this.manejoPedido = new ManejoPedido();
 
     }
 
@@ -135,14 +138,16 @@ public class ControlReportePedidosSupervisor extends HttpServlet {
     private void aprobarPedido(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String msj = "";
         int idPedido = Integer.parseInt(request.getParameter("id"));
-        Pedido pedido = new Pedido();
-        pedido.setId(idPedido);
-        pedido.setEstado(EstadoPedidoEnum.SOLICITADO.toString());
-        if (pedidoDB.update(pedido)) {
-            msj = "Se ha hecho la acción con éxito.";
+        Pedido pedido = manejoPedido.getPedido(idPedido, listaPedidos);
+        if (pedido != null) {
+            pedido.setEstado(EstadoPedidoEnum.SOLICITADO.toString());
+            if (pedidoDB.update(pedido)) {
+                msj = "Se ha hecho la acción con éxito.";
+            }
         } else {
             msj = "No se pudo realizar la acción.";
         }
+        request.getSession().setAttribute("msj", msj);
         listarPedidos(request, response);
 
     }

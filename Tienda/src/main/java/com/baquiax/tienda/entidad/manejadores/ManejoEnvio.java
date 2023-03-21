@@ -5,6 +5,7 @@
  */
 package com.baquiax.tienda.entidad.manejadores;
 
+import com.baquiax.tienda.entidad.DetalleEnvio;
 import com.baquiax.tienda.entidad.Envio;
 import java.util.List;
 
@@ -21,6 +22,15 @@ public class ManejoEnvio {
         for (Envio envio : envios) {
             if (envio.getId() == id) {
                 return envio;
+            }
+        }
+        return null;
+    }
+
+    public DetalleEnvio getDetalleEnvio(String codigoProducto, List<DetalleEnvio> detalleEnvio) {
+        for (DetalleEnvio detalle : detalleEnvio) {
+            if (detalle.getCodigoProducto().equals(codigoProducto)) {
+                return detalle;
             }
         }
         return null;

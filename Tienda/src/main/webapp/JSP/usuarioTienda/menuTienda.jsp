@@ -20,20 +20,24 @@
                 </li>
                 <c:if test="${tienda.tipo=='supervisada'}">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/ControlReporteTienda?tarea=reporteProductos">Pedidos rechazados</a>
+                        <a class="nav-link" aria-current="page"
+                           href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=listarPedidosRechazados">Pedidos rechazados</a>
                     </li>
                 </c:if>
                 <li class="nav-item">
-                    <a class="nav-link" href="envios.jsp">Recibir envíos</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/ControlEnviosTienda?tarea=verTodos">Envíos</a>
                 </li>
+                <div class="dropdown mx-3 mt-2">
+                    <a href="#"class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                        Incidencias
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlIncidenciasTienda?tarea=listarEnviosRecibidos">Crear incidencias</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlIncidenciasTienda?tarea=incidenciasSolucionas">Incidencias solucionadas</a></li>
+                    </ul>
+                </div>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Crear incidencias</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Crear devolución</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Editar incidencias</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/ControlDevolciones?tarea=listarEnviosRecibidos">Crear devolución</a>
                 </li>
                 <div class="dropdown mx-3 mt-2">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +52,6 @@
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReporteTienda?tarea=reportePedidos">Reporte de pedidos realizados</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReporteIncidencias?tarea=reporteIncidencias">Reporte  de incidencias generadas</a></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReporteDevoluciones?tarea=reporteDevoluciones">Reporte  de devoluciones generadas</a></li>
-                        <li><a class="dropdown-item" href="#">Reporte  de envións recibidos</a></li>
                     </ul>
                 </div>
             </ul>

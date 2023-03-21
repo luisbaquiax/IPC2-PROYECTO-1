@@ -19,14 +19,14 @@ public class PedidoDB {
 
     private final static String INSERT = "INSERT INTO pedido(fecha,total,estado,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?)";
     private final static String INSERT_FROM_FILE = "INSERT INTO pedido(fecha,total,estado,usuario_tienda,codigo_tienda, id) VALUES(?,?,?,?,?,?)";
-    private final static String UPDATE = "UPDATE pedido SET estado = ? WHERE id = ?";
+    private final static String UPDATE = "UPDATE pedido SET estado = ?, total = ?, fecha = ? WHERE id = ?";
     /**
      * id_pedido del último ingresado
      */
     private final static String ULTIMO
             = "SELECT id FROM pedido ORDER BY id DESC LIMIT 1";
     /**
-     * Pedidos por usuairo_bodega y por estado (SOLICITADO)
+     * Pedidos por usuairo_bodega y por estado
      */
     private final static String PEDIDO_BY_USUARIO_BODEGA_BY_ESTADO
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor \n"
@@ -41,12 +41,17 @@ public class PedidoDB {
             + "FROM pedido p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda WHERE b.codigo_usuario_bodega = ?";
-    
+
     private final static String PEDIDO_BY_USUARIO_BODEGA_BY_TIENDA
             = "SELECT p.id, p.fecha, p.total, p.estado, p.usuario_tienda, p.codigo_tienda, p.codigo_supervisor \n"
             + "FROM pedido p\n"
             + "RIGHT JOIN bodega_tienda b\n"
             + "ON  p.codigo_tienda = b.codigo_tienda WHERE b.codigo_usuario_bodega = ? AND p.codigo_tienda = ? AND p.estado = ?";
+    /**
+     * Pedidos por tienda
+     */
+    private final static String PEDIDOS_POR_TIENDA
+            = "SELECT * FROM pedido WHERE codigo_tienda = ? AND estado = ?";
 
     private final static String REPORTE_PEDIDO_TIENDA_FECHA
             = "SELECT * FROM pedido WHERE codigo_tienda = ? AND estado = ? AND fecha BETWEEN ? AND ?";
@@ -113,7 +118,9 @@ public class PedidoDB {
     public boolean update(Pedido pedido) {
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(UPDATE)) {
             statement.setString(1, pedido.getEstado());
-            statement.setInt(2, pedido.getId());
+            statement.setDouble(2, pedido.getTotal());
+            statement.setString(3, pedido.getFecha());
+            statement.setInt(4, pedido.getId());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -212,6 +219,31 @@ public class PedidoDB {
         List<Pedido> pedidos = new ArrayList<>();
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(REPORTE_PEDIDO_TIENDA)) {
             statement.setString(1, codigoTienda);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                pedidos.add(getPedido(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return (ArrayList<Pedido>) pedidos;
+    }
+
+    /**
+     * query:<br>
+     * SELECT * FROM pedido WHERE codigo_tienda = ? AND estado = ?
+     *
+     * @param codigoTienda
+     * @param estado
+     * @return Lista los pedidos por tienda, estado del pedido
+     */
+    public ArrayList<Pedido> getPedidosByTiendaByEstado(String codigoTienda, String estado) {
+        List<Pedido> pedidos = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(PEDIDOS_POR_TIENDA)) {
+            statement.setString(1, codigoTienda);
+            statement.setString(2, estado);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 pedidos.add(getPedido(resultSet));

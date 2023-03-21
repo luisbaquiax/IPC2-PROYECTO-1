@@ -197,6 +197,7 @@ public class ControlBodegaEnvios extends HttpServlet {
                 usuario.getCodigo(),
                 pedido.getId(),
                 null);
+        this.pedido.setTotal(getTotal(listaDetallePedido));
         ingresarEnvio(this.listaDetallePedido, envio, request, response);
     }
 
@@ -356,6 +357,14 @@ public class ControlBodegaEnvios extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private double getTotal(List<DetallePedido> lista) {
+        double total = 0;
+        for (DetallePedido detalleEnvio : lista) {
+            total += detalleEnvio.getCantidad() * detalleEnvio.getPrecioUnitario();
+        }
+        return total;
     }
 
 }
