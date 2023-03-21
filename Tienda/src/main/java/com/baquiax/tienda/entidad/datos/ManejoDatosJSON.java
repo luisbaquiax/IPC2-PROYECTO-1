@@ -271,20 +271,21 @@ public class ManejoDatosJSON {
                     System.out.println();
                     Tienda tU = new Tienda();
                     tU.setCodigo(tiendasBodega.get(j).toString());
+                    userBodega.getTiendas().add(tU);
                     //corregir este método
-                    if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), this.tiendas) != null) {
-                        for (UsuarioBodega usBodega : this.getUsuarioBodegas()) {
-                            if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), userBodega.getTiendas()) == null) {
-                                userBodega.getTiendas().add(tU);
-                                break;
-                            } else {
-                                this.getErrores().add(new DatoError("Tienda asiganada a bodeguero.", "La tienda ya le pertenece a otro usuario."));
-                                break;
-                            }
-                        }
-                    } else {
-                        this.getErrores().add(new DatoError("No existe dato", "La tienda no existe en la lista de tiendas"));
-                    }
+//                    if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), this.tiendas) != null) {
+//                        for (UsuarioBodega usBodega : this.getUsuarioBodegas()) {
+//                            if (manejoTiendas.getTienda(tiendasBodega.get(j).toString(), userBodega.getTiendas()) == null) {
+//                                userBodega.getTiendas().add(tU);
+//                                break;
+//                            } else {
+//                                this.getErrores().add(new DatoError("Tienda asiganada a bodeguero.", "La tienda ya le pertenece a otro usuario."));
+//                                break;
+//                            }
+//                        }
+//                    } else {
+//                        this.getErrores().add(new DatoError("No existe dato", "La tienda no existe en la lista de tiendas"));
+//                    }
                 }
                 if (manejoUsuario.getUser(usuario.getCodigo(), this.usuarios) == null) {
                     this.getUsuarios().add(usuario);
