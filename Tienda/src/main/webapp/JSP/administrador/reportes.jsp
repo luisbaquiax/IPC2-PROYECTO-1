@@ -175,7 +175,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% List<String[]> tiendasMasEnvios = (List<String[]>) request.getSession().getAttribute("listaTiendasMasPedidos");
+                            <% List<String[]> tiendasMasEnvios = (List<String[]>) request.getSession().getAttribute("listarUsuariosMasPedidos");
                                 for (int i = 0; i < tiendasMasEnvios.size(); i++) {%>
                             <tr>
                                 <td><% out.print(tiendasMasEnvios.get(i)[0]);%></td>

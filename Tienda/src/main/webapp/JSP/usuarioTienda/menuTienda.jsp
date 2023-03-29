@@ -18,7 +18,7 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="crearPedido.jsp">Crear pedido</a>
                 </li>
-                <c:if test="${tienda.tipo=='supervisada'}">
+                <c:if test="${tienda.tipo=='supervisada' || tienda.tipo == 'SUPERVISADA'}">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page"
                            href="${pageContext.request.contextPath}/ControlPedidoTienda?tarea=listarPedidosRechazados">Pedidos rechazados</a>

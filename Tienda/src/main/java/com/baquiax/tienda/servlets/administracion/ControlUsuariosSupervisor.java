@@ -5,9 +5,12 @@
  */
 package com.baquiax.tienda.servlets.administracion;
 
+import com.baquiax.tienda.db.modelo.UsuarioAdministradorDB;
 import com.baquiax.tienda.db.modelo.UsuarioDB;
 import com.baquiax.tienda.entidad.Usuario;
+import com.baquiax.tienda.entidad.UsuarioAdministrador;
 import com.baquiax.tienda.entidad.encripta.Encriptador;
+import com.baquiax.tienda.entidad.enumEntidad.TipoUsuarioEnum;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ControlUsuariosSupervisor extends HttpServlet {
 
     //base
-    private UsuarioDB usuarioDB;
-
+    private UsuarioDB usuarioDB;    
+    private UsuarioAdministradorDB usuarioAdministradorDB;
     //servlet
     private ControlAdministrador controlAdministrador;
 
@@ -34,6 +37,7 @@ public class ControlUsuariosSupervisor extends HttpServlet {
     public ControlUsuariosSupervisor() {
         //base
         this.usuarioDB = new UsuarioDB();
+        this.usuarioAdministradorDB = new UsuarioAdministradorDB();
         //servlet
         this.controlAdministrador = new ControlAdministrador();
         //entidad
@@ -146,14 +150,21 @@ public class ControlUsuariosSupervisor extends HttpServlet {
 
         //validar que no exista otro con mismo user_name
         if (controlAdministrador.serchUserByUsername(username, this.usuarioDB.getUsers()) == null) {
-            Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioSupervisor");
+            Usuario usuario = new Usuario(
+                    codigo,
+                    TipoUsuarioEnum.USUARIO_SUPERVISOR.getTipo(),
+                    username,
+                    nombre,
+                    password,
+                    true,
+                    email);
             usuario.setNombreUsuario(username);
             //usuario
-            usuario.setCodigo(codigo);
-            usuario.setEmail(email);
-            usuario.setNombre(nombre);
             usuario.setPassword(encriptador.encriptar(password));
+            UsuarioAdministrador admin = new UsuarioAdministrador();
+            admin.setCodigo(codigo);
             if (usuarioDB.insert(usuario)) {
+                this.usuarioAdministradorDB.insert(admin);
                 msj = "Se guardado con éxito los datos";
             } else {
                 msj = "No se pudo guardar los datos";

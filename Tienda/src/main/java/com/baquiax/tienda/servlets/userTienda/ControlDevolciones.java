@@ -218,7 +218,7 @@ public class ControlDevolciones extends HttpServlet {
             for (int i = 0; i < this.listaDetalleDevolucion.size(); i++) {
                 if (listaDetalleDevolucion.get(i).getCodigoProducto().equals(codigo)
                         && listaDetalleDevolucion.get(i).getMotivo().equals(motivo)) {
-                    listaDetalleDevolucion.remove(i);
+                    listaDetalleDevolucion.remove(listaDetalleDevolucion.get(i));
                     request.getSession().setAttribute(msjDevoluciones, "Se ha quitado con éxito el producto en la devolución.");
                     break;
                 }

@@ -80,7 +80,7 @@
                     <tbody>
                         <c:forEach items="${listaDevoluciones}" var="dev">
                             <tr>
-                                <td>$devi.id}</td>
+                                <td>${dev.id}</td>
                                 <td>${dev.fecha}</td>
                                 <td>${dev.estado}</td>
                                 <td><fmt:formatNumber value="${dev.total}" type="currency"></fmt:formatNumber></td>

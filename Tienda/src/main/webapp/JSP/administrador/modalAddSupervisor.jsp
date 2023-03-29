@@ -9,11 +9,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h5 class="modal-title" id="exampleModalLabel">Crear usuario tienda</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Crear usuario supervisor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="${pageContext.request.contextPath}/ControlUsuariosTienda?tarea=add">
+                <form method="POST" action="${pageContext.request.contextPath}/ControlUsuariosSupervisor?tarea=add">
                     <div class="row">
                         <div class="mb-3 form-group">
                             <label for="recipient-name" class="col-form-label">Codigo:</label>

@@ -79,6 +79,7 @@ public class ControlArchivo extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
                 }
             } catch (ParseException | NullPointerException ex) {
+                request.getSession().setAttribute("msjeDatos", "No se pudo leer el archivo.");
                 response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
                 Logger.getLogger(ControlArchivo.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -114,6 +115,7 @@ public class ControlArchivo extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
         } catch (ParseException | NullPointerException ex) {
             System.out.println(ex.getMessage());
+            request.getSession().setAttribute("msjeDatos", "Debes elegir el archivo | No se pudo leer el archivo.");
             Logger.getLogger(ControlArchivo.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect(request.getContextPath() + "/cargaDatos.jsp");
         }

@@ -70,7 +70,7 @@ public class ManejoReporteAdministracion {
      */
     public List<String[]> getUsuariosMasEnviosFecha(String fecha1, String fecha2) {
         return reporteAdministracionDB.getReporteAdministracion(
-                ReporteAdministracionDB.REPORTE_USUARIOS_ENVIOS_GENERADOS,
+                ReporteAdministracionDB.REPORTE_USUARIOS_ENVIOS_GENERADOS_BETWEEN_FEHCA,
                 ReporteAdministracionDB.NUMERO_ENVIOS,
                 ReporteAdministracionDB.USUARIO_BODEGA,
                 fecha1,
@@ -96,7 +96,7 @@ public class ManejoReporteAdministracion {
      */
     public List<String[]> getUsuariosMasPedidosFecha(String fecha1, String fecha2) {
         return reporteAdministracionDB.getReporteAdministracion(
-                ReporteAdministracionDB.REPORTE_USUARIOS_PEDIDOS_GENERADOS,
+                ReporteAdministracionDB.REPORTE_USUARIOS_PEDIDOS_GENERADO_BETWEEN_FECHA,
                 ReporteAdministracionDB.NUMERO_PEDIDOS,
                 ReporteAdministracionDB.USUARIO_TIENDA,
                 fecha1,
