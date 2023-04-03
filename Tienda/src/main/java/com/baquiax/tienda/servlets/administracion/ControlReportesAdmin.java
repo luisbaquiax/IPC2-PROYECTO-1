@@ -6,10 +6,12 @@
 package com.baquiax.tienda.servlets.administracion;
 
 import com.baquiax.tienda.db.modelo.reporteAdministracion.ManejoReporteAdministracion;
+import com.baquiax.tienda.db.modelo.reporteAdministracion.ReporteAdministracionDB;
 import com.baquiax.tienda.entidad.EstadosTipos.ListaEstadosEnvio;
 import com.baquiax.tienda.entidad.EstadosTipos.ListaEstadosPedido;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,12 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControlReportesAdmin", urlPatterns = {"/ControlReportesAdmin"})
 public class ControlReportesAdmin extends HttpServlet {
 
+    private ReporteAdministracionDB reporteAdministracionDB;
     private ManejoReporteAdministracion manejoReporteAdministracion;
 
     private ListaEstadosPedido listaEstadosPedido;
     private ListaEstadosEnvio listaEstadosEnvio;
 
     public ControlReportesAdmin() {
+        this.reporteAdministracionDB = new ReporteAdministracionDB();
         this.manejoReporteAdministracion = new ManejoReporteAdministracion();
         this.listaEstadosEnvio = new ListaEstadosEnvio();
         this.listaEstadosPedido = new ListaEstadosPedido();
@@ -57,7 +61,9 @@ public class ControlReportesAdmin extends HttpServlet {
             case "listarUsuariosMasPedidos":
                 listarUsuariosMasPedidos(request, response);
                 break;
-
+            case "listarProductosMasSolicitados":
+                listarProductosMasSolicitados(request, response);
+                break;
         }
 
     }
@@ -86,6 +92,9 @@ public class ControlReportesAdmin extends HttpServlet {
                     break;
                 case "listarUsuariosMasPedidosFiltrado":
                     listarUsuariosMasPedidosFiltrado(request, response);
+                    break;
+                case "listarProductosMasSolicitadosFecha":
+                    listarProductosMasSolicitadosFecha(request, response);
                     break;
             }
         }
@@ -133,6 +142,21 @@ public class ControlReportesAdmin extends HttpServlet {
         String fecha2 = request.getParameter("fecha2");
         request.getSession().setAttribute("listarUsuariosMasPedidos", this.manejoReporteAdministracion.getUsuariosMasPedidosFecha(fecha1, fecha2));
         request.getSession().setAttribute("reporte", "6");
+        response.sendRedirect(request.getContextPath() + "/JSP/administrador/reportes.jsp");
+    }
+
+    private void listarProductosMasSolicitados(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println(Arrays.toString(this.reporteAdministracionDB.getProductosSolicitados().toArray()));
+        request.getSession().setAttribute("productosSolicitadosReporte", this.reporteAdministracionDB.getProductosSolicitados());
+        request.getSession().setAttribute("reporte", "7");
+        response.sendRedirect(request.getContextPath() + "/JSP/administrador/reportes.jsp");
+    }
+
+    private void listarProductosMasSolicitadosFecha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fecha1 = request.getParameter("fecha1");
+        String fecha2 = request.getParameter("fecha2");
+        request.getSession().setAttribute("productosSolicitadosReporte", this.reporteAdministracionDB.getProductosSolicitados(fecha1, fecha2));
+        request.getSession().setAttribute("reporte", "8");
         response.sendRedirect(request.getContextPath() + "/JSP/administrador/reportes.jsp");
     }
 

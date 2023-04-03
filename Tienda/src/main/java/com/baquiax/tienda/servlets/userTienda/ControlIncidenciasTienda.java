@@ -180,7 +180,8 @@ public class ControlIncidenciasTienda extends HttpServlet {
         DetalleEnvio detalle = manejoEnvio.getDetalleEnvio(codigo, listaDetalleEnvio);
         System.out.println("cantidad " + manejoIncidencias.cantidadProductos(codigo, listaDetalleIncidencia));
         if (detalle != null) {
-            if ((detalle.getCantidad() >= cantidad) || detalle.getCantidad() >= (cantidad + manejoIncidencias.cantidadProductos(codigo, listaDetalleIncidencia))) {
+            if ((detalle.getCantidad() >= cantidad) 
+                    || detalle.getCantidad() >= (cantidad + manejoIncidencias.cantidadProductos(codigo, listaDetalleIncidencia))) {
                 if (manejoIncidencias.validarDetalleIncidencia(codigo, motivoIncidencia, this.listaDetalleIncidencia) == null) {
                     this.listaDetalleIncidencia.add(new DetalleIncidencia(0, codigo, cantidad, motivoIncidencia));
                     msj = "Se ha agregado el producto en la incidencia.";

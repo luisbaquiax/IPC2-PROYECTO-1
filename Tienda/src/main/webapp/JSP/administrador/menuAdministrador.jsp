@@ -27,24 +27,26 @@
                 </li>
                 <li class="nav-item">
                     <div class="dropdown mx-3">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                             <strong>Reportes</strong>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser2">
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarTiendasMasPedidos">Reporte de las 5 tiendas con más pedidos</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarUsuarioMasEnvios">Reporte de los 5 usuarios con más envíos generados</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarUsuariosMasPedidos">Reporte de los 5 usuarios con más pedidos generados</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarProductosMasSolicitados">Reporte de productos más solicitados</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarProductosDañados">Reporte de productos dañados</a></li>
                         </ul>
                     </div>
                 </li>
             </ul>
             <form class="d-flex">
                 <div class="dropdown mx-5">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="../../resources/img/user.png" alt="" width="32" height="32" class="rounded-circle me-2">
                             <strong>${user.nombreUsuario}</strong>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser3">
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/Close">Salir</a></li>
                     </ul>

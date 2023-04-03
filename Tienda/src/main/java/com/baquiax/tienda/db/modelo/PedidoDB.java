@@ -52,7 +52,9 @@ public class PedidoDB {
      */
     private final static String PEDIDOS_POR_TIENDA
             = "SELECT * FROM pedido WHERE codigo_tienda = ? AND estado = ?";
-
+    /**
+     *
+     */
     private final static String REPORTE_PEDIDO_TIENDA_FECHA
             = "SELECT * FROM pedido WHERE codigo_tienda = ? AND estado = ? AND fecha BETWEEN ? AND ?";
     private final static String REPORTE_PEDIDO_TIENDA

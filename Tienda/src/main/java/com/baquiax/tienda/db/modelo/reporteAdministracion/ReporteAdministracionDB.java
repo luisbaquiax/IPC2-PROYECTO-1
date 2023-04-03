@@ -6,6 +6,7 @@
 package com.baquiax.tienda.db.modelo.reporteAdministracion;
 
 import com.baquiax.tienda.db.coneccion.ConeccionDB;
+import com.baquiax.tienda.entidad.Producto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,13 +87,22 @@ public class ReporteAdministracionDB {
     /**
      * Reporte de productos más solicitados por las tiendas
      */
-    public final String REPORTE_PRODUCTOS_MAS_PEDIDOS = "";
+    private final String REPORTE_PRODUCTOS_MAS_PEDIDOS
+            = "SELECT COUNT(codigo_producto) AS cantidad, codigo_producto, precio_unitario\n"
+            + "FROM detalle_pedido d\n"
+            + "INNER JOIN pedido p\n"
+            + "GROUP BY codigo_producto;";
     /**
      *
      * Reporte de productos más solicitados por las tiendas en un intervalo de
      * tiempo.
      */
-    private final String REPORTE_PRODUCTOS_MAS_PEDIDOS_BETWEEN_FECHA = "";
+    private final String REPORTE_PRODUCTOS_MAS_PEDIDOS_BETWEEN_FECHA
+            = "SELECT COUNT(codigo_producto) AS cantidad, codigo_producto, precio_unitario\n"
+            + "FROM detalle_pedido d\n"
+            + "INNER JOIN pedido p\n"
+            + "WHERE fecha BETWEEN ? AND ?\n"
+            + "GROUP BY codigo_producto;";
 
     private ResultSet resultSet;
 
@@ -157,5 +167,64 @@ public class ReporteAdministracionDB {
         datos[0] = resultSet.getString(parametro1);
         datos[1] = resultSet.getString(parametro2);
         return datos;
+    }
+
+    /**
+     * Lista los productos mas solicitados
+     *
+     * @return
+     */
+    public List<Producto> getProductosSolicitados() {
+        List<Producto> productos = new ArrayList<>();
+        try (PreparedStatement st = ConeccionDB.getConnection().prepareStatement(REPORTE_PRODUCTOS_MAS_PEDIDOS)) {
+            resultSet = st.executeQuery();
+            while (resultSet.next()) {
+                productos.add(getProductoSolicitado(resultSet));
+            }
+            resultSet.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
+    /**
+     * Lista los productos mas solicitados por intervalo de fecha
+     *
+     * @param fecha1
+     * @param fecha2
+     * @return
+     */
+    public List<Producto> getProductosSolicitados(String fecha1, String fecha2) {
+        List<Producto> productos = new ArrayList<>();
+        try (PreparedStatement st = ConeccionDB.getConnection().prepareStatement(REPORTE_PRODUCTOS_MAS_PEDIDOS_BETWEEN_FECHA)) {
+            st.setString(1, fecha1);
+            st.setString(2, fecha2);
+            resultSet = st.executeQuery();
+            while (resultSet.next()) {
+                productos.add(getProductoSolicitado(resultSet));
+            }
+            resultSet.close();
+            st.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
+    /**
+     *
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
+    private Producto getProductoSolicitado(ResultSet resultSet) throws SQLException {
+        return new Producto(
+                resultSet.getString("codigo_producto"),
+                "",
+                0,
+                resultSet.getDouble("precio_unitario"),
+                resultSet.getInt("cantidad"));
     }
 }

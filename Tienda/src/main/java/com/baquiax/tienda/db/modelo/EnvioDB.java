@@ -28,6 +28,12 @@ public class EnvioDB {
     private final static String SELECT_BY_TIENDA_BY_ESTADO = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ?";
 
     /**
+     * Lista los envios que llegarán a un tienda en específico, y por estado
+     */
+    private final static String SELECT_BY_TIENDA_BY_ESTADO_BETWEEN_FECHA
+            = "SELECT * FROM envio WHERE codigo_tienda = ? AND estado = ? AND fecha BETWEEN ? AND ?";
+
+    /**
      * Reporte de envios generados a un tienda por un usuario_bodega
      */
     private final static String SELECT_BY_TIENDA_BY_ESTADO_BY_BODEGA_FECHA
@@ -127,6 +133,34 @@ public class EnvioDB {
         try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA_BY_ESTADO)) {
             statement.setString(1, codigoTienda);
             statement.setString(2, estado);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                envios.add(getEnvio(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return envios;
+    }
+
+    /**
+     * Lista los envíos por tienda, estado y en intervalo de fecha.
+     *
+     * @param codigoTienda
+     * @param estado
+     * @param fecha1
+     * @param fecha2
+     * @return
+     */
+    public List<Envio> getEnvios(String codigoTienda, String estado, String fecha1, String fecha2) {
+        List<Envio> envios = new ArrayList<>();
+        try (PreparedStatement statement = ConeccionDB.getConnection().prepareStatement(SELECT_BY_TIENDA_BY_ESTADO_BETWEEN_FECHA)) {
+            statement.setString(1, codigoTienda);
+            statement.setString(2, estado);
+            statement.setString(3, fecha1);
+            statement.setString(4, fecha2);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 envios.add(getEnvio(resultSet));

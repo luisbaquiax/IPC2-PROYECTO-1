@@ -186,6 +186,56 @@
                 </div>
             </div>
         </c:if>
+        <c:if test="${reporte=='7' || reporte == '8'}">
+            <div class="container mt-5">
+                <div class="card-header">
+                    <br>
+                    <div class="text-center">
+                        <h1>Lista de productos más solicitados</h1>
+                        <hr>
+                    </div>
+                    <form class="row g-3" method="POST" action="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarProductosMasSolicitadosFecha">
+                        <div class="col-auto">
+                            <label for="fecha1" class="">Fecha1: </label>
+                            <input class="form-control" type="date" name="fecha1" id="fecha1" required="">
+                        </div>
+                        <div class="col-auto">
+                            <label for="fecha2" class="">Fecha2: </label>
+                            <input class="form-control"  type="date" name="fecha2" id="fecha2"  required="">
+                        </div>
+                        <div class="col-auto">
+                            <br>
+                            <button type="submit" class="btn btn-primary mb-3"><i class="fas fa-search"></i>Realizar consulta</button>
+                        </div>
+                        <div class="col-auto">
+                            <br>
+                            <a class="btn btn-primary mb-3" href="${pageContext.request.contextPath}/ControlReportesAdmin?tarea=listarProductosMasSolicitados"> 
+                                <i class="fas fa-list"></i>
+                                Mostrar todos</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <table id="" class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Código de producto</th>
+                                <th scope="col">Precio unitario</th>
+                                <th scope="col">Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${productosSolicitadosReporte}" var="p">
+                                <tr>
+                                    <td>${p.codigo}</td>
+                                    <td><fmt:formatNumber value="${p.precio}" type="currency"></fmt:formatNumber></td>
+                                    <td>${p.existencia}</td>
+                                </tr>
+                            </c:forEach>
+                    </table>
+                </div>
+            </div>
+        </c:if>
 
         <!-- boostrap-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
