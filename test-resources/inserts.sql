@@ -1,0 +1,71 @@
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('AAA','PRODUCTO_A',15.00,17.00,100);
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('BBB','PRODUCTO_B',15.00,17.00,100);
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('CCC','PRODUCTO_C',15.00,17.00,100);
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('DDD','PRODUCTO_D',15.00,17.00,100);
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('FFF','PRODUCTO_F',15.00,17.00,100);
+INSERT INTO producto(codigo,nombre,costo,precio,existencia) VALUES('GGG','PRODUCTO_G',15.00,17.00,100);
+
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD1','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD2','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD3','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD4','DIRECCION 1','normal');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD5','DIRECCION 1','normal');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('COD6','DIRECCION 1','normal');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA1','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA2','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA3','DIRECCION 1','supervisada');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA4','DIRECCION 1','normal');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA5','DIRECCION 1','normal');
+INSERT INTO tienda(codigo,direccion,tipo) VALUES('TIENDA6','DIRECCION 1','normal');
+
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD1','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD1','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD1','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD1','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD1','GGG',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD2','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD2','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD2','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD3','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD3','GGG',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD4','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD4','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD5','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD5','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('COD5','GGG',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA1','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA1','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA1','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA1','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA2','GGG',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA2','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA2','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA2','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA3','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA3','GGG',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA3','AAA',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA4','BBB',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA5','CCC',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA5','DDD',50);
+INSERT INTO catalogo(codigo_tienda,codigo_producto,existencia) VALUES('TIENDA6','GGG',50);
+
+INSERT INTO usuario(codigo,tipo,nombre_usuario,nombre,password,estado,email) VALUES('COD1','admins','useradmin','Luis','plplgRKFhx6OWCKshUewMg==',1,'email1');
+INSERT INTO usuario(codigo,tipo,nombre_usuario,nombre,password,estado,email) VALUES('COD2','usuariostienda','tienda1','Luis','x1bREY7Lz5JangBn2IGCWg==',1,'email2');
+INSERT INTO usuario(codigo,tipo,nombre_usuario,nombre,password,estado,email) VALUES('COD3','encargadosBodega','bodega1','Luis','VGSjE22KqOVrBHCHaA4BBA==',1,'email3');
+INSERT INTO usuario(codigo,tipo,nombre_usuario,nombre,password,estado,email) VALUES('COD4','supervisores','supervisor1','Luis','6Hh5snWZEXyesrVdXdntdQ==',1,'email4');
+INSERT INTO usuario(codigo,tipo,nombre_usuario,nombre,password,estado,email) VALUES('COD5','usuariostienda','tienda2','Luis','L+5rJyOBliyvvpOopkBW0w==',1,'email5');
+
+INSERT INTO administrador(codigo) VALUES('COD1');
+INSERT INTO usuario_bodega(codigo) VALUES('COD3');
+INSERT INTO usuario_supervisor(codigo) VALUES('COD4');
+INSERT INTO usuario_tienda(codigo,codigo_tienda) VALUES('COD2','COD1');
+INSERT INTO usuario_tienda(codigo,codigo_tienda) VALUES('COD5','COD2');
+
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','COD1');
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','COD2');
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','COD3');
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','TIENDA1');
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','TIENDA2');
+INSERT INTO bodega_tienda(codigo_usuario_bodega,codigo_tienda) VALUES('COD3','TIENDA3');
+
+INSERT INTO pedido(fecha,total,estado,usuario_tienda,codigo_tienda) VALUES(?,?,?,?,?);
