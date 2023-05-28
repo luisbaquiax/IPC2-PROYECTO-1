@@ -22,6 +22,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Solucionar incidencias</a>
                 </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/ControlBodegaDevoluciones?tarea=listarDevoluciones">Lista de devoluciones</a>
                 </li>

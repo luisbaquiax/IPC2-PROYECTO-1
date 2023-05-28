@@ -1,0 +1,294 @@
+{
+    "productos" : [
+        {
+            "codigo" : 1,
+            "nombre" : "Producto 1",
+            "costo" : 13.44,
+            "precio" : 15,
+            "existencias" : 125
+        },
+        {
+            "codigo" : 2,
+            "nombre" : "Producto 2",
+            "costo" : 4.25,
+            "precio" : 6,
+            "existencias" : 100
+        },
+        {
+            "codigo" : 3,
+            "nombre" : "Producto 3",
+            "costo" : 25,
+            "precio" : 28,
+            "existencias" : 75
+        },
+        {
+            "codigo" : 4,
+            "nombre" : "Producto 4",
+            "costo" : 32.8,
+            "precio" : 38,
+            "existencias" : 200
+        },
+        {
+            "codigo" : 5,
+            "nombre" : "Producto 5",
+            "costo" : 44.1,
+            "precio" : 50,
+            "existencias" : 250
+        },
+        {
+            "codigo" : 6,
+            "nombre" : "Producto 6",
+            "costo" : 12.3,
+            "precio" : 15,
+            "existencias" : 18
+        },
+        {
+            "codigo" : 7,
+            "nombre" : "Producto 7",
+            "costo" : 3.1,
+            "precio" : 6,
+            "existencias" : 75
+        },
+        {
+            "codigo" : 8,
+            "nombre" : "Producto 8",
+            "costo" : 111.11,
+            "precio" : 125,
+            "existencias" : 42
+        },
+        {
+            "codigo" : 9,
+            "nombre" : "Producto 9",
+            "costo" : 365.87,
+            "precio" : 398,
+            "existencias" : 12
+        },
+        {
+            "codigo" : 10,
+            "nombre" : "Producto 10",
+            "costo" : 13.44,
+            "precio" : 15,
+            "existencias" : 125
+        }
+    ],
+    "tiendas" : [
+        {
+            "codigo" : 1,
+            "direccion" : "Direccion tienda 1",
+            "tipo" : "normal",
+            "productos" : [
+                { "codigo" : 2, "existencias" : 9 },
+                { "codigo" : 8, "existencias" : 12 },
+                { "codigo" : 9, "existencias" : 1 },
+                { "codigo" : 4, "existencias" : 14 },
+                { "codigo" : 7, "existencias" : 0 },
+                { "codigo" : 1, "existencias" : 20 }
+            ]
+        },
+        {
+            "codigo" : 2,
+            "direccion" : "Direccion tienda 2",
+            "tipo" : "supervisada",
+            "productos" : [
+                { "codigo" : 1, "existencias" : 11 },
+                { "codigo" : 3, "existencias" : 1 },
+                { "codigo" : 4, "existencias" : 4 },
+                { "codigo" : 5, "existencias" : 10 },
+                { "codigo" : 10, "existencias" : 29 }
+            ]
+        },
+        {
+            "codigo" : 3,
+            "direccion" : "Direccion tienda 3",
+            "tipo" : "supervisada",
+            "productos" : [
+                { "codigo" : 7, "existencias" : 50 },
+                { "codigo" : 6, "existencias" : 15 },
+                { "codigo" : 3, "existencias" : 14 },
+                { "codigo" : 4, "existencias" : 21 },
+                { "codigo" : 9, "existencias" : 17 }
+            ]
+        }
+    ],
+    "admins" : [
+        {
+            "codigo" : 1,
+            "nombre" : "Administrador 1",
+            "username" : "admin1",
+            "password" : "password1"
+        }
+    ],
+    "usuariostienda" : [
+        {
+            "codigo" : 2,
+            "nombre" : "Usuario 1 Tienda 1",
+            "tienda" : 1,
+            "username" : "tienda1-user1",
+            "password" : "passut1",
+            "email" : "utienda1@tiendas.com"
+        },
+        {
+            "codigo" : 3,
+            "nombre" : "Usuario 2 Tienda 1",
+            "tienda" : 1,
+            "username" : "tienda1-user2",
+            "password" : "passu2t1",
+            "email" : "u2tienda1@tiendas.com"
+        },
+        {
+            "codigo" : 4,
+            "nombre" : "Usuario 1 tienda 2",
+            "tienda" : 2,
+            "username" : "utienda2",
+            "password" : "passut2",
+            "email" : "utienda2@tiendas.com"
+        },
+        {
+            "codigo" : 5,
+            "nombre" : "Usuario 1 tienda 3",
+            "tienda" : 3,
+            "username" : "utienda3",
+            "password" : "passut3",
+            "email" : "utienda3@tiendas.com"
+        }
+    ],
+    "supervisores" : [
+        {
+            "codigo" : 6,
+            "nombre" : "Supervisor 1",
+            "username" : "supervi1",
+            "password" : "passuper",
+            "email" : "supervisor1@tiendas.com"
+        }
+    ],
+    "encargadosBodega" : [
+        {
+            "codigo" : 7,
+            "nombre" : "Usuario Bodegas 1",
+            "username" : "bodegas1",
+            "password" : "passbodegas1",
+            "email" : "bodegas1@tiendas.com",
+            "tiendas" : [1,3]
+        },
+        {
+            "codigo" : 8,
+            "nombre" : "Usuario Bodegas 2",
+            "username" : "bodegas2",
+            "password" : "passbodegas2",
+            "email" : "bodegas2@tiendas.com",
+            "tiendas" : [2, 3]
+        }
+    ],
+    "pedidos" : [
+        {
+            "id" : 1,
+            "tienda" : 1,
+            "usuario" : 2,
+            "fecha" : "2023-02-04",
+            "productos" : [
+                {"codigo" : 1, "costoU" : 13.44, "cantidad" : 3, "costoTotal" : 40.32 },
+                {"codigo" : 8, "costoU" : 111.11, "cantidad" : 2, "costoTotal" : 222.22 },
+                {"codigo" : 7, "costoU" : 3.1, "cantidad" : 10, "costoTotal" : 31 }
+            ],
+            "total" : 293.54,
+            "estado" : "COMPLETADO"
+        },
+        {
+            "id" : 2,
+            "tienda" : 1,
+            "usuario" : 3,
+            "fecha" : "2023-02-09",
+            "productos" : [
+                {"codigo" : 1, "costoU" : 13.44, "cantidad" : 3, "costoTotal" : 40.32 },
+                {"codigo" : 9, "costoU" : 365.87, "cantidad" : 1, "costoTotal" : 365.87 }
+            ],
+            "total" : 406.19,
+            "estado" : "SOLICITADO"
+        },
+        {
+            "id" : 3,
+            "tienda" : 2,
+            "usuario" : 4,
+            "fecha" : "2023-02-15",
+            "productos" : [
+                {"codigo" : 1, "costoU" : 13.44, "cantidad" : 3, "costoTotal" : 26.88 },
+                {"codigo" : 3, "costoU" : 25, "cantidad" : 2, "costoTotal" : 50 }
+            ],
+            "total" : 76.88,
+            "estado" : "RECHAZADO"
+        },
+        {
+            "id" : 4,
+            "tienda" : 3,
+            "usuario" : 5,
+            "fecha" : "2023-02-14",
+            "productos" : [
+                { "codigo" : 7, "costoU" : 3.1, "cantidad" : 6, "costoTotal" : 18.6 },
+                { "codigo" : 3, "costoU" : 25, "cantidad" : 3, "costoTotal" : 75 },
+                { "codigo" : 9, "costoU" : 365.87, "cantidad" : 2, "costoTotal" : 731.74 }
+            ],
+            "total" : 825.34,
+            "estado" : "ENVIADO"
+        }
+    ],
+    "envios" : [
+        {
+            "id" : 1,
+            "pedido" : 2,
+            "tienda" : 3,
+            "usuario" : 8,
+            "fechaSalida" : "2023-02-19",
+            "fechaRecibido" : "",
+            "productos" : [
+                { "codigo" : 7, "costoU" : 3.1, "cantidad" : 6, "costoTotal" : 18.6 },
+                { "codigo" : 3, "costoU" : 25, "cantidad" : 3, "costoTotal" : 75 },
+                { "codigo" : 9, "costoU" : 365.87, "cantidad" : 2, "costoTotal" : 731.74 }
+            ],
+            "total" : 825.34,
+            "estado" : "DESPACHADO"
+        },
+        {
+            "id" : 2,
+            "pedido" : 2,
+            "tienda" : 1,
+            "usuario" : 7,
+            "fechaSalida" : "2023-02-11",
+            "fechaRecibido" : "2023-02-13",
+            "productos" : [
+                {"codigo" : 1, "costoU" : 13.44, "cantidad" : 3, "costoTotal" : 40.32 },
+                {"codigo" : 8, "costoU" : 111.11, "cantidad" : 2, "costoTotal" : 222.22 },
+                {"codigo" : 7, "costoU" : 3.1, "cantidad" : 10, "costoTotal" : 31 }
+            ],
+            "total" : 293.54,
+            "estado" : "RECIBIDO"
+        }
+    ],
+    "incidencias" : [
+        {
+            "id" : 1,
+            "envio" : 2,
+            "tienda" : 1,
+            "usuario" : 2,
+            "fecha" : "2023-02-14",
+            "productos" : [
+                {"codigo" : 1, "cantidad" : 1, "motivo" : "PRODUCTO DAÑADO" }
+            ],
+            "solucion" :"Devolver producto",
+            "estado" : "SOLUCIONDA"
+        }
+    ],
+    "devoluciones" : [
+        {
+            "id" : 1,
+            "envio" : 2,
+            "tienda" : 1,
+            "usuario" : 2,
+            "fecha" : "2023-02-15",
+            "productos" : [
+                { "codigo" : 1, "costo" : 13.44, "cantidad" : 1, "costoTotal" : 13.44, "motivo" : "PRODUCTO DAÑADO" }
+            ],
+            "total" : 13.44,
+            "estado" : "ACTIVA"
+        }
+    ]
+}
